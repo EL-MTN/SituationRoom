@@ -5,4 +5,6 @@ export interface MapWidgetConfig extends BaseWidgetConfig {
   type: 'map';
   center: [number, number];
   zoom: number;
+  showConflicts?: boolean;
+  locationName?: string | null;
 }

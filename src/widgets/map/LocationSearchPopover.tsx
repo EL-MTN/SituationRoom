@@ -63,7 +63,7 @@ export function LocationSearchPopover({
     setIsSearching(true);
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`,
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&accept-language=en`,
         { headers: { 'User-Agent': 'SituationRoom/1.0' } }
       );
       const data = await response.json();
@@ -87,7 +87,10 @@ export function LocationSearchPopover({
     else if (result.type === 'city' || result.type === 'town') zoom = 12;
     else if (result.type === 'village' || result.type === 'suburb') zoom = 14;
 
-    const shortName = result.display_name.split(',')[0].trim();
+    // Extract location name with fallbacks
+    const displayName = result.display_name || '';
+    const shortName = displayName.split(',')[0]?.trim() || displayName || 'Unknown Location';
+
     onLocationSelect(lat, lon, zoom, shortName);
     setQuery('');
     setResults([]);

@@ -5,21 +5,29 @@ import type { WidgetHeaderExtensionProps } from '../registry';
 import type { MapWidgetConfig } from './MapWidget.types';
 
 export function MapWidgetHeader({
+  config,
   onConfigChange,
 }: WidgetHeaderExtensionProps<MapWidgetConfig>) {
   const [showLocationPopover, setShowLocationPopover] = useState(false);
-  const [selectedLocationName, setSelectedLocationName] = useState<string | null>(null);
   const locationButtonRef = useRef<HTMLButtonElement>(null);
 
+  // Safely get location name, ensuring it's a valid string or null
+  const selectedLocationName = config.locationName && typeof config.locationName === 'string'
+    ? config.locationName
+    : null;
+
   const handleLocationSelect = (lat: number, lon: number, zoom: number, name: string) => {
-    onConfigChange({ center: [lat, lon], zoom });
-    setSelectedLocationName(name);
+    if (name && typeof name === 'string') {
+      onConfigChange({ center: [lat, lon], zoom, locationName: name });
+    }
   };
 
   const handleLocationReset = () => {
-    onConfigChange({ center: [20, 0], zoom: 2 });
-    setSelectedLocationName(null);
+    onConfigChange({ center: [20, 0], zoom: 2, locationName: null });
   };
+
+  const displayName = selectedLocationName || 'Search location...';
+  const hasLocation = Boolean(selectedLocationName);
 
   return (
     <>
@@ -32,7 +40,7 @@ export function MapWidgetHeader({
           setShowLocationPopover(!showLocationPopover);
         }}
         className={`flex items-center gap-1.5 px-2 py-1 rounded text-sm transition-colors ${
-          selectedLocationName
+          hasLocation
             ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
             : 'hover:bg-[var(--color-accent)] text-[var(--color-muted)]'
         }`}
@@ -40,7 +48,7 @@ export function MapWidgetHeader({
       >
         <MapPin className="w-4 h-4" />
         <span className="font-medium truncate max-w-[150px]">
-          {selectedLocationName || 'Search location...'}
+          {displayName}
         </span>
       </button>
 

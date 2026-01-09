@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { WidgetProps } from '../registry';
 import type { MapWidgetConfig } from './MapWidget.types';
+import { ConflictMarkers } from './ConflictMarkers';
+import { useGdeltGeoEvents } from '../../hooks';
 
 interface MapControllerProps {
   center: [number, number];
@@ -39,6 +41,14 @@ function MapController({ center, zoom }: MapControllerProps) {
 }
 
 export function MapWidget({ config }: WidgetProps<MapWidgetConfig>) {
+  const showConflicts = config.showConflicts ?? true; // Default to showing conflicts
+  const { data: geoFeatures = [] } = useGdeltGeoEvents({
+    location: config.locationName,
+    center: config.locationName ? config.center : null, // Only filter by proximity when location is set
+    zoom: config.zoom,
+    enabled: showConflicts,
+  });
+
   return (
     <div className="h-full w-full relative">
       <MapContainer
@@ -53,6 +63,10 @@ export function MapWidget({ config }: WidgetProps<MapWidgetConfig>) {
         />
 
         <MapController center={config.center} zoom={config.zoom} />
+
+        {showConflicts && geoFeatures.length > 0 && (
+          <ConflictMarkers features={geoFeatures} />
+        )}
       </MapContainer>
     </div>
   );

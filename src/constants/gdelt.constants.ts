@@ -1,12 +1,19 @@
 export const GDELT_CONFIG = {
   baseUrl: 'https://api.gdeltproject.org/api/v2',
   docEndpoint: '/doc/doc',
+  geoEndpoint: '/geo/geo',
 
   defaults: {
     timespan: '24h',
     maxRecords: 100,
     format: 'json',
     sort: 'datedesc',
+  },
+
+  geo: {
+    defaultQuery: 'conflict OR violence OR attack OR military',
+    defaultTimespan: '24h',
+    pollIntervalMs: 900000, // 15 minutes - GEO updates every 15 min
   },
 
   // Rate limiting - be conservative
