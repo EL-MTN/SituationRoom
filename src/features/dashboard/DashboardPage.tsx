@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Globe, List, Plus, Settings } from 'lucide-react';
+import { Globe, Plus, Settings, List } from 'lucide-react';
 import { DashboardGrid } from '../../components/layout/DashboardGrid';
 import { useDashboard } from '../../stores';
 
@@ -36,27 +36,7 @@ export function DashboardPage() {
 
       {/* Dashboard Grid */}
       <main className="flex-1 overflow-hidden min-h-0 p-1">
-        {activeDashboard.widgets.length === 0 ? (
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center">
-              <div className="flex justify-center gap-4 mb-4">
-                <Globe className="w-12 h-12 text-[var(--color-muted)]" />
-                <List className="w-12 h-12 text-[var(--color-muted)]" />
-              </div>
-              <p className="text-[var(--color-muted)] mb-4">
-                Add widgets to start monitoring
-              </p>
-              <button
-                onClick={() => setShowAddWidget(true)}
-                className="px-4 py-2 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-accent)] transition-colors"
-              >
-                Add Your First Widget
-              </button>
-            </div>
-          </div>
-        ) : (
-          <DashboardGrid dashboard={activeDashboard} />
-        )}
+        <DashboardGrid dashboard={activeDashboard} />
       </main>
 
       {/* Add Widget Modal */}

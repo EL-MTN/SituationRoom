@@ -34,8 +34,11 @@ const defaultEventFeedConfig: Omit<EventFeedWidgetConfig, 'id'> = {
   highlightKeywords: [],
 };
 
-// Default widget dimensions
-const DEFAULT_WIDGET_SIZE = { w: 4, h: 5, minW: 2, minH: 3 };
+// Default widget dimensions by type
+const WIDGET_SIZES: Record<WidgetType, { w: number; h: number; minW: number; minH: number }> = {
+  'map': { w: 4, h: 5, minW: 2, minH: 3 },
+  'event-feed': { w: 4, h: 5, minW: 4, minH: 3 },
+};
 
 interface GridSettings {
   cols: number;
@@ -102,7 +105,6 @@ export function createWidgetInstance(
   const { existingLayouts = [], gridCols = 24, gridRows = 16 } = options;
 
   let config: WidgetConfig;
-  const size = { ...DEFAULT_WIDGET_SIZE };
 
   switch (type) {
     case 'map':
@@ -114,6 +116,8 @@ export function createWidgetInstance(
     default:
       throw new Error(`Unknown widget type: ${type}`);
   }
+
+  const size = WIDGET_SIZES[type];
 
   // Find first available position
   const position = findFirstAvailablePosition(existingLayouts, size, {
