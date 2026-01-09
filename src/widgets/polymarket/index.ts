@@ -19,7 +19,7 @@ WidgetRegistry.register<PolymarketWidgetConfig>({
       title: 'Polymarket',
       eventSlug: null,
       eventTitle: null,
-      chartInterval: '1d',
+      chartInterval: '1h',
     },
     layout: { w: 4, h: 4, minW: 3, minH: 3 },
   },

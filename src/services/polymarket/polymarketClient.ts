@@ -104,8 +104,15 @@ export async function fetchPriceHistory(
   tokenId: string,
   interval: '1m' | '1h' | '6h' | '1d' | '1w' = '1d'
 ): Promise<PolymarketPricePoint[]> {
-  // Fidelity requirements: 1m min 10, 1w min 5
-  const fidelity = interval === '1m' ? 10 : interval === '1w' ? 5 : 60;
+  // Fidelity: minutes between data points (lower = more granular)
+  const fidelityMap: Record<string, number> = {
+    '1h': 1,     // 1 min between points (~60 points)
+    '6h': 5,     // 5 min between points (~72 points)
+    '1d': 10,    // 10 min between points (~144 points)
+    '1w': 5,     // 5 min between points
+    '1m': 10,    // 10 min between points (1 month)
+  };
+  const fidelity = fidelityMap[interval] ?? 10;
   const url = `${clobUrl}/prices-history?market=${tokenId}&interval=${interval}&fidelity=${fidelity}`;
 
   try {

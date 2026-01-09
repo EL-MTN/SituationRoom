@@ -21,6 +21,16 @@ function formatDate(timestamp: number): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+function formatDateTime(timestamp: number): string {
+  const date = new Date(timestamp);
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
 function formatPercent(value: number): string {
   return `${(value * 100).toFixed(1)}%`;
 }
@@ -85,10 +95,14 @@ export function PriceHistoryChart({ data, height = 120 }: PriceHistoryChartProps
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="date"
+            dataKey="timestamp"
+            type="number"
+            scale="time"
+            domain={['dataMin', 'dataMax']}
             tick={{ fontSize: 10, fill: 'var(--color-muted)' }}
             axisLine={false}
             tickLine={false}
+            tickFormatter={(ts) => formatDate(ts)}
             interval="preserveStartEnd"
             minTickGap={50}
           />
@@ -108,7 +122,12 @@ export function PriceHistoryChart({ data, height = 120 }: PriceHistoryChartProps
               fontSize: '12px',
             }}
             formatter={(value) => [formatPercent(value as number), 'Yes']}
-            labelFormatter={(label) => String(label)}
+            labelFormatter={(_, payload) => {
+              if (payload?.[0]?.payload?.timestamp) {
+                return formatDateTime(payload[0].payload.timestamp);
+              }
+              return '';
+            }}
           />
           <Area
             type="monotone"

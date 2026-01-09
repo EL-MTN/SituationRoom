@@ -71,7 +71,7 @@ function MarketCard({ market, priceHistory = [], isLoadingHistory }: MarketCardP
   const priceChange = prices[0] - 0.5; // Simple change indicator
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="px-2 py-3 space-y-3">
       {/* Market Question */}
       <h3 className="text-sm font-medium leading-tight">
         {market.question}
