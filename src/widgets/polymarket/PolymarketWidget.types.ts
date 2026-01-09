@@ -1,5 +1,8 @@
 import type { BaseWidgetConfig } from '../registry';
 
+/** Price history interval options */
+export type PriceHistoryInterval = '1m' | '1h' | '6h' | '1d' | '1w';
+
 /** Polymarket widget configuration */
 export interface PolymarketWidgetConfig extends BaseWidgetConfig {
   type: 'polymarket';
@@ -7,4 +10,6 @@ export interface PolymarketWidgetConfig extends BaseWidgetConfig {
   eventSlug: string | null;
   /** Display name of the selected market */
   eventTitle: string | null;
+  /** Price history chart interval */
+  chartInterval: PriceHistoryInterval;
 }

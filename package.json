@@ -24,6 +24,7 @@
     "react-grid-layout": "^2.2.2",
     "react-leaflet": "^5.0.0",
     "react-leaflet-cluster": "^4.0.0",
+    "recharts": "^3.6.0",
     "tailwindcss": "^4.1.18",
     "uuid": "^13.0.0"
   },

@@ -13,6 +13,8 @@ export interface PolymarketMarket {
   // These can be JSON strings or arrays depending on the endpoint
   outcomes: string | string[];
   outcomePrices: string | string[];
+  // CLOB token IDs for Yes/No outcomes - used for price history
+  clobTokenIds?: string | string[];
   volume: string;
   volume24hr: number;
   liquidity: string;

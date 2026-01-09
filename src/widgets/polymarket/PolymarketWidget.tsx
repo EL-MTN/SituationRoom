@@ -1,8 +1,9 @@
 import { TrendingUp, TrendingDown, Activity, DollarSign } from 'lucide-react';
-import { usePolymarketEvent } from '../../hooks';
+import { usePolymarketEvent, usePolymarketPriceHistory } from '../../hooks';
 import type { WidgetProps } from '../registry';
 import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
 import type { PolymarketMarket } from '../../types';
+import { PriceHistoryChart } from './PriceHistoryChart';
 
 function formatVolume(volume: number): string {
   if (volume >= 1_000_000) return `$${(volume / 1_000_000).toFixed(1)}M`;
@@ -43,9 +44,11 @@ function OddsBar({ outcome, price, isYes }: OddsBarProps) {
 
 interface MarketCardProps {
   market: PolymarketMarket;
+  priceHistory?: { timestamp: number; price: number }[];
+  isLoadingHistory?: boolean;
 }
 
-function MarketCard({ market }: MarketCardProps) {
+function MarketCard({ market, priceHistory = [], isLoadingHistory }: MarketCardProps) {
   // Parse outcomes/prices - they may come as JSON strings
   const rawOutcomes = market.outcomes;
   const rawPrices = market.outcomePrices;
@@ -84,6 +87,17 @@ function MarketCard({ market }: MarketCardProps) {
         ))}
       </div>
 
+      {/* Price History Chart */}
+      <div className="pt-3 border-t border-[var(--color-border)]">
+        {isLoadingHistory ? (
+          <div className="h-[120px] flex items-center justify-center text-xs text-[var(--color-muted)]">
+            Loading chart...
+          </div>
+        ) : (
+          <PriceHistoryChart data={priceHistory} height={120} />
+        )}
+      </div>
+
       {/* Stats Row */}
       <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border)] text-xs text-[var(--color-muted)]">
         <div className="flex items-center gap-1">
@@ -113,6 +127,18 @@ export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>
   const { data: event, isLoading, error } = usePolymarketEvent({
     slug: config.eventSlug,
     enabled: !!config.eventSlug,
+  });
+
+  // Get the primary market's CLOB token ID for price history (first token = Yes outcome)
+  const primaryMarket = event?.markets?.[0];
+  const rawTokenIds = primaryMarket?.clobTokenIds;
+  const tokenIds = typeof rawTokenIds === 'string' ? JSON.parse(rawTokenIds) : rawTokenIds;
+  const yesTokenId = tokenIds?.[0] || null;
+
+  const { data: priceHistory = [], isLoading: isLoadingHistory } = usePolymarketPriceHistory({
+    marketId: yesTokenId,
+    interval: config.chartInterval || '1d',
+    enabled: !!yesTokenId,
   });
 
   // No market selected
@@ -149,9 +175,6 @@ export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>
     );
   }
 
-  // Get the primary market (first one, usually the main Yes/No question)
-  const primaryMarket = event.markets?.[0];
-
   if (!primaryMarket) {
     return (
       <div className="h-full flex items-center justify-center text-[var(--color-muted)]">
@@ -162,7 +185,11 @@ export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>
 
   return (
     <div className="h-full overflow-auto">
-      <MarketCard market={primaryMarket} />
+      <MarketCard
+        market={primaryMarket}
+        priceHistory={priceHistory}
+        isLoadingHistory={isLoadingHistory}
+      />
     </div>
   );
 }

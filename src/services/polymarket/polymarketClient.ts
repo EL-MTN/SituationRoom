@@ -65,25 +65,18 @@ export async function searchMarkets(query: string): Promise<PolymarketSearchResu
   if (!query.trim()) return [];
 
   const url = `${baseUrl}${endpoints.publicSearch}?q=${encodeURIComponent(query)}`;
-  console.log('[Polymarket] Search URL:', url);
-
   const response = await fetch(url);
-  console.log('[Polymarket] Response status:', response.status);
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error('[Polymarket] Search error response:', errorText);
     throw new Error(`Polymarket search error: ${response.status}`);
   }
 
   const data = await response.json();
-  console.log('[Polymarket] Raw response data:', data);
 
   // The public-search endpoint returns { events: [...], pagination: {...} }
   const events = (data?.events || []) as PolymarketEvent[];
-  console.log('[Polymarket] Events count:', events.length);
 
-  const results = events.slice(0, 20).map((event) => {
+  return events.slice(0, 20).map((event) => {
     const primaryMarket = event.markets?.[0];
 
     // Parse outcomes/prices - they come as JSON strings from search endpoint
@@ -104,40 +97,35 @@ export async function searchMarkets(query: string): Promise<PolymarketSearchResu
       outcomePrices,
     };
   });
-
-  console.log('[Polymarket] Transformed results:', results);
-  return results;
 }
 
 /** Fetch price history for a market from CLOB API */
 export async function fetchPriceHistory(
-  marketId: string,
-  interval: 'hour' | 'day' | 'week' = 'day'
+  tokenId: string,
+  interval: '1m' | '1h' | '6h' | '1d' | '1w' = '1d'
 ): Promise<PolymarketPricePoint[]> {
-  // CLOB API endpoint for price history
-  const url = `${clobUrl}/prices-history?market=${marketId}&interval=${interval}&fidelity=60`;
+  // Fidelity requirements: 1m min 10, 1w min 5
+  const fidelity = interval === '1m' ? 10 : interval === '1w' ? 5 : 60;
+  const url = `${clobUrl}/prices-history?market=${tokenId}&interval=${interval}&fidelity=${fidelity}`;
 
   try {
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.warn(`Price history not available for market ${marketId}`);
       return [];
     }
 
     const data = await response.json();
 
-    // Transform the response - CLOB returns { history: [{ t: timestamp, p: price }] }
     if (data.history && Array.isArray(data.history)) {
       return data.history.map((point: { t: number; p: number }) => ({
-        timestamp: point.t * 1000, // Convert to milliseconds
+        timestamp: point.t * 1000,
         price: point.p,
       }));
     }
 
     return [];
-  } catch (error) {
-    console.warn('Failed to fetch price history:', error);
+  } catch {
     return [];
   }
 }

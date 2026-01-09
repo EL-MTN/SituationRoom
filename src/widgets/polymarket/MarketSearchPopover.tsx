@@ -69,8 +69,6 @@ export function MarketSearchPopover({
   }, [isOpen, buttonRef]);
 
   const handleSelect = (result: PolymarketSearchResult) => {
-    console.log('[Polymarket] Selected result:', result);
-    // Use id instead of slug - more reliable with the API
     onMarketSelect(result.id, result.question || result.title);
     setQuery('');
     onClose();

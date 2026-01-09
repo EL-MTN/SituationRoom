@@ -27,14 +27,14 @@ export function usePolymarketEvent({
 
 interface UsePolymarketPriceHistoryParams {
   marketId: string | null;
-  interval?: 'hour' | 'day' | 'week';
+  interval?: '1m' | '1h' | '6h' | '1d' | '1w';
   enabled?: boolean;
 }
 
 /** Hook to fetch price history for a market */
 export function usePolymarketPriceHistory({
   marketId,
-  interval = 'day',
+  interval = '1d',
   enabled = true,
 }: UsePolymarketPriceHistoryParams) {
   return useQuery<PolymarketPricePoint[], Error>({

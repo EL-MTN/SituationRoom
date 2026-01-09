@@ -1,7 +1,8 @@
 export const POLYMARKET_CONFIG = {
   // Use proxy paths to avoid CORS issues in development
   baseUrl: '/api/polymarket',
-  clobUrl: '/api/polymarket-clob',
+  // CLOB API has CORS enabled, use directly
+  clobUrl: 'https://clob.polymarket.com',
 
   endpoints: {
     events: '/events',
