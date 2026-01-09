@@ -10,9 +10,8 @@ import type {
   DashboardSettings,
   WidgetConfig,
   WidgetLayout,
-  WidgetType,
 } from '../types';
-import { createWidgetInstance } from '../widgets/WidgetRegistry';
+import { WidgetRegistry } from '../widgets';
 
 // State
 interface DashboardState {
@@ -26,7 +25,7 @@ type DashboardAction =
   | { type: 'DELETE_DASHBOARD'; payload: { id: string } }
   | { type: 'SET_ACTIVE_DASHBOARD'; payload: { id: string } }
   | { type: 'UPDATE_SETTINGS'; payload: { id: string; settings: Partial<DashboardSettings> } }
-  | { type: 'ADD_WIDGET'; payload: { dashboardId: string; widget: ReturnType<typeof createWidgetInstance> } }
+  | { type: 'ADD_WIDGET'; payload: { dashboardId: string; widget: { config: WidgetConfig; layout: WidgetLayout } } }
   | { type: 'REMOVE_WIDGET'; payload: { dashboardId: string; widgetId: string } }
   | { type: 'UPDATE_WIDGET_CONFIG'; payload: { dashboardId: string; widgetId: string; config: Partial<WidgetConfig> } }
   | { type: 'UPDATE_LAYOUTS'; payload: { dashboardId: string; layouts: WidgetLayout[] } };
@@ -175,7 +174,7 @@ interface DashboardContextValue {
   deleteDashboard: (id: string) => void;
   setActiveDashboard: (id: string) => void;
   updateDashboardSettings: (id: string, settings: Partial<DashboardSettings>) => void;
-  addWidget: (dashboardId: string, type: WidgetType) => void;
+  addWidget: (dashboardId: string, type: string) => void;
   removeWidget: (dashboardId: string, widgetId: string) => void;
   updateWidgetConfig: (dashboardId: string, widgetId: string, config: Partial<WidgetConfig>) => void;
   updateLayouts: (dashboardId: string, layouts: WidgetLayout[]) => void;
@@ -207,18 +206,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'UPDATE_SETTINGS', payload: { id, settings } });
   }, []);
 
-  const addWidget = useCallback((dashboardId: string, type: WidgetType) => {
+  const addWidget = useCallback((dashboardId: string, type: string) => {
     const dashboard = state.dashboards.find((d) => d.id === dashboardId);
     const existingLayouts = dashboard?.widgets.map((w) => w.layout) ?? [];
     const gridCols = dashboard?.settings.gridCols ?? 24;
     const gridRows = dashboard?.settings.gridRows ?? 16;
 
-    const widget = createWidgetInstance(type, {
+    const widget = WidgetRegistry.createInstance(type, {
       existingLayouts,
       gridCols,
       gridRows,
     });
-    dispatch({ type: 'ADD_WIDGET', payload: { dashboardId, widget } });
+    dispatch({ type: 'ADD_WIDGET', payload: { dashboardId, widget: widget as { config: WidgetConfig; layout: WidgetLayout } } });
   }, [state.dashboards]);
 
   const removeWidget = useCallback((dashboardId: string, widgetId: string) => {

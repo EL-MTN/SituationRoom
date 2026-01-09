@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { Globe, Plus, Settings, List } from 'lucide-react';
+import { Globe, Plus, Settings } from 'lucide-react';
 import { DashboardGrid } from '../../components/layout/DashboardGrid';
 import { useDashboard } from '../../stores';
+import { WidgetRegistry } from '../../widgets';
 
 export function DashboardPage() {
   const { activeDashboard, addWidget } = useDashboard();
   const [showAddWidget, setShowAddWidget] = useState(false);
+
+  // Get all registered widget metadata for the picker
+  const widgetTypes = WidgetRegistry.getAllMetadata();
 
   // Should always have an active dashboard from initial state
   if (!activeDashboard) {
@@ -13,23 +17,23 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-[var(--color-background)]">
+    <div className="h-full flex flex-col bg-(--color-background)">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-(--color-border)">
         <div className="flex items-center gap-3">
-          <Globe className="w-6 h-6 text-[var(--color-primary)]" />
+          <Globe className="w-6 h-6 text-(--color-primary)" />
           <h1 className="text-lg font-semibold">{activeDashboard.name}</h1>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowAddWidget(true)}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[var(--color-primary)] text-white rounded-lg hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-(--color-primary) text-white rounded-lg hover:opacity-90 transition-opacity"
           >
             <Plus className="w-4 h-4" />
             Add Widget
           </button>
-          <button className="p-2 rounded-lg hover:bg-[var(--color-accent)] transition-colors">
-            <Settings className="w-5 h-5 text-[var(--color-muted)]" />
+          <button className="p-2 rounded-lg hover:bg-(--color-accent) transition-colors">
+            <Settings className="w-5 h-5 text-(--color-muted)" />
           </button>
         </div>
       </header>
@@ -39,46 +43,39 @@ export function DashboardPage() {
         <DashboardGrid dashboard={activeDashboard} />
       </main>
 
-      {/* Add Widget Modal */}
+      {/* Add Widget Modal - Now uses registry dynamically */}
       {showAddWidget && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[var(--color-background)] rounded-lg p-6 w-full max-w-md shadow-xl">
+          <div className="bg-(--color-background) rounded-lg p-6 w-full max-w-md shadow-xl">
             <h2 className="text-lg font-semibold mb-4">Add Widget</h2>
             <div className="space-y-3">
-              <button
-                onClick={() => {
-                  addWidget(activeDashboard.id, 'map');
-                  setShowAddWidget(false);
-                }}
-                className="w-full flex items-center gap-3 p-4 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-accent)] transition-colors"
-              >
-                <Globe className="w-6 h-6 text-[var(--color-primary)]" />
-                <div className="text-left">
-                  <div className="font-medium">Map</div>
-                  <div className="text-sm text-[var(--color-muted)]">
-                    Interactive map with event markers
-                  </div>
-                </div>
-              </button>
-              <button
-                onClick={() => {
-                  addWidget(activeDashboard.id, 'event-feed');
-                  setShowAddWidget(false);
-                }}
-                className="w-full flex items-center gap-3 p-4 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-accent)] transition-colors"
-              >
-                <List className="w-6 h-6 text-[var(--color-primary)]" />
-                <div className="text-left">
-                  <div className="font-medium">Event Feed</div>
-                  <div className="text-sm text-[var(--color-muted)]">
-                    Chronological list of events
-                  </div>
-                </div>
-              </button>
+              {widgetTypes.map((widget) => {
+                const Icon = widget.icon;
+                return (
+                  <button
+                    key={widget.type}
+                    onClick={() => {
+                      addWidget(activeDashboard.id, widget.type);
+                      setShowAddWidget(false);
+                    }}
+                    className="w-full flex items-center gap-3 p-4 border border-(--color-border) rounded-lg hover:bg-(--color-accent) transition-colors"
+                  >
+                    <Icon className="w-6 h-6 text-(--color-primary)" />
+                    <div className="text-left">
+                      <div className="font-medium">{widget.displayName}</div>
+                      {widget.description && (
+                        <div className="text-sm text-(--color-muted)">
+                          {widget.description}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
             <button
               onClick={() => setShowAddWidget(false)}
-              className="mt-4 w-full py-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+              className="mt-4 w-full py-2 text-sm text-(--color-muted) hover:text-(--color-foreground)"
             >
               Cancel
             </button>

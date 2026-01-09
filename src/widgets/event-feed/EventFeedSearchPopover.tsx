@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { useClickOutside } from '../hooks/useClickOutside';
-import type { EventFeedWidgetConfig, WidgetConfig } from '../types';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
 
 interface EventFeedSearchPopoverProps {
   isOpen: boolean;
   onClose: () => void;
   config: EventFeedWidgetConfig;
-  onConfigChange: (config: Partial<WidgetConfig>) => void;
+  onConfigChange: (config: Partial<EventFeedWidgetConfig>) => void;
 }
 
 export function EventFeedSearchPopover({
@@ -36,7 +36,7 @@ export function EventFeedSearchPopover({
   const handleSubmit = () => {
     onConfigChange({
       filters: { ...config.filters, query },
-    } as Partial<WidgetConfig>);
+    });
     onClose();
   };
 
@@ -44,7 +44,7 @@ export function EventFeedSearchPopover({
     setQuery('');
     onConfigChange({
       filters: { ...config.filters, query: '' },
-    } as Partial<WidgetConfig>);
+    });
     onClose();
   };
 

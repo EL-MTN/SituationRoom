@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { Loader2 } from 'lucide-react';
-import { useClickOutside } from '../hooks/useClickOutside';
+import { useClickOutside } from '../../hooks/useClickOutside';
 
 interface LocationResult {
   place_id: number;

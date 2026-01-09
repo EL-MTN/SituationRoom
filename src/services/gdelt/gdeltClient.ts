@@ -1,7 +1,7 @@
 import { GDELT_CONFIG } from '../../constants';
-import type { GdeltDocResponse, WidgetFilters } from '../../types';
+import type { GdeltDocResponse, EventFeedFilters } from '../../types';
 
-function buildQueryString(filters: WidgetFilters): string {
+function buildQueryString(filters: EventFeedFilters): string {
   if (filters.query) {
     return filters.query;
   }
@@ -9,7 +9,7 @@ function buildQueryString(filters: WidgetFilters): string {
 }
 
 export interface FetchDocParams {
-  filters: WidgetFilters;
+  filters: EventFeedFilters;
   timespan?: string;
   maxRecords?: number;
 }

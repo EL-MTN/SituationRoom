@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchGdeltDoc, transformDocResponse } from '../services/gdelt';
-import type { NormalizedEvent, WidgetFilters } from '../types';
+import type { NormalizedEvent, EventFeedFilters } from '../types';
 import { GDELT_CONFIG } from '../constants';
 
 interface UseGdeltEventsParams {
-  filters: WidgetFilters;
+  filters: EventFeedFilters;
   timespan?: string;
   maxRecords?: number;
   pollIntervalMs?: number;

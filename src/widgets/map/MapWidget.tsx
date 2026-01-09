@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import type { MapWidgetConfig, WidgetProps } from '../../types';
+import type { WidgetProps } from '../registry';
+import type { MapWidgetConfig } from './MapWidget.types';
 
 interface MapControllerProps {
   center: [number, number];

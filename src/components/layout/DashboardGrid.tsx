@@ -1,9 +1,7 @@
-import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
+import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import RGL, { getCompactor } from 'react-grid-layout';
 import { useDashboard } from '../../stores';
-import { WidgetWrapper } from '../../widgets/WidgetWrapper';
-import { MapWidget } from '../../widgets/map/MapWidget';
-import { EventFeedWidget } from '../../widgets/event-feed/EventFeedWidget';
+import { WidgetWrapper, WidgetRegistry } from '../../widgets';
 import type { Dashboard, WidgetConfig, WidgetLayout } from '../../types';
 
 // Cast to any to bypass v1 types that don't match v2 API
@@ -145,23 +143,30 @@ export function DashboardGrid({ dashboard }: DashboardGridProps) {
   );
 
   const renderWidget = (config: WidgetConfig) => {
-    const props = {
-      config,
-      onConfigChange: (c: Partial<WidgetConfig>) => handleConfigChange(config.id, c),
-    };
+    // Dynamic component lookup from registry - NO SWITCH STATEMENT
+    const definition = WidgetRegistry.get(config.type);
 
-    switch (config.type) {
-      case 'map':
-        return <MapWidget {...props} config={config} />;
-      case 'event-feed':
-        return <EventFeedWidget {...props} config={config} />;
-      default:
-        return (
-          <div className="h-full flex items-center justify-center text-(--color-muted)">
-            Unknown widget type
-          </div>
-        );
+    if (!definition) {
+      return (
+        <div className="h-full flex items-center justify-center text-(--color-muted)">
+          Unknown widget type: {config.type}
+        </div>
+      );
     }
+
+    // The registry returns generic types, but we know each widget's component
+    // handles its specific config type correctly
+    const WidgetComponent = definition.component as React.ComponentType<{
+      config: WidgetConfig;
+      onConfigChange: (config: Partial<WidgetConfig>) => void;
+    }>;
+
+    return (
+      <WidgetComponent
+        config={config}
+        onConfigChange={(c) => handleConfigChange(config.id, c)}
+      />
+    );
   };
 
   return (

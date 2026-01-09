@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, Newspaper, Clock, Globe } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import { useGdeltEvents } from '../../hooks/useGdeltEvents';
 import { useEvents } from '../../stores';
-import type { EventFeedWidgetConfig, WidgetProps, NormalizedEvent } from '../../types';
-import { formatDistanceToNow } from 'date-fns';
+import type { WidgetProps } from '../registry';
+import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
+import type { NormalizedEvent } from '../../types';
 
 export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);

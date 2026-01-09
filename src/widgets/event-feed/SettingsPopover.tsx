@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-import { useClickOutside } from '../hooks/useClickOutside';
-import type { EventFeedWidgetConfig, WidgetConfig } from '../types';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
 
 interface SettingsPopoverProps {
   isOpen: boolean;
   onClose: () => void;
   config: EventFeedWidgetConfig;
-  onConfigChange: (config: Partial<WidgetConfig>) => void;
+  onConfigChange: (config: Partial<EventFeedWidgetConfig>) => void;
 }
 
 export function SettingsPopover({
@@ -35,7 +35,7 @@ export function SettingsPopover({
           onChange={(e) => {
             onConfigChange({
               filters: { ...config.filters, timespan: e.target.value },
-            } as Partial<WidgetConfig>);
+            });
           }}
           className="w-full px-2 py-1.5 text-sm border border-[var(--color-border)] rounded bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
         >
