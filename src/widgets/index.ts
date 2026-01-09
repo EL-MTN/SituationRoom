@@ -16,7 +16,9 @@ export type {
 // This ensures widgets are registered when the app starts
 import './map';
 import './event-feed';
+import './polymarket';
 
 // Re-export widget types for convenience
 export type { MapWidgetConfig } from './map';
 export type { EventFeedWidgetConfig, EventFeedFilters } from './event-feed';
+export type { PolymarketWidgetConfig } from './polymarket';
