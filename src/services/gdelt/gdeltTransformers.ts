@@ -63,7 +63,6 @@ export function transformDocArticle(article: GdeltDocArticle): NormalizedEvent {
     id: generateId(article.url, article.seendate),
     title: article.title || 'Untitled',
     url: article.url,
-    urlMobile: article.url_mobile || undefined,
     sourceUrl: article.domain,
     sourceName: extractDomainName(article.domain),
     sourceCountry: article.sourcecountry || 'Unknown',

@@ -12,7 +12,6 @@ export interface NormalizedEvent {
   id: string;
   title: string;
   url: string;
-  urlMobile?: string;
   sourceUrl: string;
   sourceName: string;
   sourceCountry: string;
@@ -22,7 +21,6 @@ export interface NormalizedEvent {
   imageUrl?: string;
   tone?: number;
   locations: EventLocation[];
-  themes?: string[];
   raw?: unknown;
 }
 

@@ -11,7 +11,6 @@ interface EventContextValue {
   selectedEvent: EventSelection;
   geoFocus: GeoFocus | null;
   selectEvent: (eventId: string | null, source: 'map' | 'event-feed') => void;
-  clearSelection: () => void;
   setGeoFocus: (focus: GeoFocus | null) => void;
 }
 
@@ -33,10 +32,6 @@ export function EventProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const clearSelection = useCallback(() => {
-    setSelectedEvent({ eventId: null, source: null, timestamp: 0 });
-  }, []);
-
   const setGeoFocus = useCallback((focus: GeoFocus | null) => {
     setGeoFocusState(focus);
   }, []);
@@ -45,7 +40,6 @@ export function EventProvider({ children }: { children: ReactNode }) {
     selectedEvent,
     geoFocus,
     selectEvent,
-    clearSelection,
     setGeoFocus,
   };
 

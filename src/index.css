@@ -18,6 +18,9 @@
     --color-primary-foreground: #ffffff;
     --color-accent: #f1f5f9;
     --color-destructive: #ef4444;
+    --color-positive: #22c55e;
+    --color-neutral: #eab308;
+    --color-highlight: #fef3c7;
   }
 
   .dark {
@@ -29,6 +32,9 @@
     --color-primary-foreground: #ffffff;
     --color-accent: #1e293b;
     --color-destructive: #ef4444;
+    --color-positive: #22c55e;
+    --color-neutral: #eab308;
+    --color-highlight: #78350f;
   }
 
   html,
@@ -134,13 +140,13 @@
   .marker-cluster-small,
   .marker-cluster-medium,
   .marker-cluster-large {
-    background-color: rgba(59, 130, 246, 0.5);
+    background-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
   }
 
   .marker-cluster-small div,
   .marker-cluster-medium div,
   .marker-cluster-large div {
-    background-color: rgba(59, 130, 246, 0.8);
+    background-color: color-mix(in srgb, var(--color-primary) 80%, transparent);
     color: white;
     font-weight: 600;
   }

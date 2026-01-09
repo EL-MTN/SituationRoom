@@ -208,9 +208,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addWidget = useCallback((dashboardId: string, type: WidgetType) => {
-    const widget = createWidgetInstance(type);
+    const dashboard = state.dashboards.find((d) => d.id === dashboardId);
+    const existingLayouts = dashboard?.widgets.map((w) => w.layout) ?? [];
+    const gridCols = dashboard?.settings.gridCols ?? 24;
+    const gridRows = dashboard?.settings.gridRows ?? 16;
+
+    const widget = createWidgetInstance(type, {
+      existingLayouts,
+      gridCols,
+      gridRows,
+    });
     dispatch({ type: 'ADD_WIDGET', payload: { dashboardId, widget } });
-  }, []);
+  }, [state.dashboards]);
 
   const removeWidget = useCallback((dashboardId: string, widgetId: string) => {
     dispatch({ type: 'REMOVE_WIDGET', payload: { dashboardId, widgetId } });

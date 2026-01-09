@@ -148,7 +148,6 @@ export function DashboardGrid({ dashboard }: DashboardGridProps) {
     const props = {
       config,
       onConfigChange: (c: Partial<WidgetConfig>) => handleConfigChange(config.id, c),
-      isEditing: false,
     };
 
     switch (config.type) {

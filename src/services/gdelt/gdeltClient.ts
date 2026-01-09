@@ -2,29 +2,10 @@ import { GDELT_CONFIG } from '../../constants';
 import type { GdeltDocResponse, GdeltGeoResponse, WidgetFilters } from '../../types';
 
 function buildQueryString(filters: WidgetFilters): string {
-  const parts: string[] = [];
-
   if (filters.query) {
-    parts.push(filters.query);
+    return filters.query;
   }
-
-  if (filters.sourceLang) {
-    parts.push(`sourcelang:${filters.sourceLang}`);
-  }
-
-  if (filters.sourceCountry) {
-    parts.push(`sourcecountry:${filters.sourceCountry}`);
-  }
-
-  if (filters.toneMin !== undefined) {
-    parts.push(`tone>${filters.toneMin}`);
-  }
-
-  if (filters.toneMax !== undefined) {
-    parts.push(`tone<${filters.toneMax}`);
-  }
-
-  return parts.join(' ') || '*';
+  return '*';
 }
 
 export interface FetchGeoParams {

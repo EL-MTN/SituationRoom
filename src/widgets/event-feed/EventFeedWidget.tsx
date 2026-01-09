@@ -67,7 +67,7 @@ export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) 
       config.highlightKeywords.some(
         (k) => k.toLowerCase() === part.toLowerCase()
       ) ? (
-        <mark key={i} className="bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded">
+        <mark key={i} className="bg-[var(--color-highlight)] px-0.5 rounded">
           {part}
         </mark>
       ) : (

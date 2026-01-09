@@ -1,4 +1,4 @@
-import type { WidgetInstance, WidgetLayout } from './widget.types';
+import type { WidgetInstance } from './widget.types';
 
 /** Dashboard-level settings */
 export interface DashboardSettings {
@@ -17,9 +17,4 @@ export interface Dashboard {
   updatedAt: Date;
   widgets: WidgetInstance[];
   settings: DashboardSettings;
-}
-
-/** Layout change event from react-grid-layout */
-export interface LayoutChangeEvent {
-  layouts: WidgetLayout[];
 }

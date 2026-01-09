@@ -5,10 +5,6 @@ export type WidgetType = 'map' | 'event-feed';
 export interface WidgetFilters {
   query?: string;
   timespan?: string;
-  sourceLang?: string;
-  sourceCountry?: string;
-  toneMin?: number;
-  toneMax?: number;
 }
 
 /** Base configuration all widgets share */
@@ -20,21 +16,12 @@ export interface BaseWidgetConfig {
   filters: WidgetFilters;
 }
 
-/** Bounding box for geographic filtering */
-export interface BoundingBox {
-  north: number;
-  south: number;
-  east: number;
-  west: number;
-}
-
 /** Map-specific configuration */
 export interface MapWidgetConfig extends BaseWidgetConfig {
   type: 'map';
   center: [number, number];
   zoom: number;
   showClustering: boolean;
-  boundingBox?: BoundingBox;
 }
 
 /** Event feed-specific configuration */
@@ -71,16 +58,4 @@ export interface WidgetInstance {
 export interface WidgetProps<T extends WidgetConfig = WidgetConfig> {
   config: T;
   onConfigChange: (config: Partial<T>) => void;
-  isEditing: boolean;
-}
-
-/** Widget definition for registry */
-export interface WidgetDefinition {
-  type: WidgetType;
-  name: string;
-  description: string;
-  icon: string;
-  component: React.ComponentType<WidgetProps<any>>;
-  defaultConfig: Omit<BaseWidgetConfig, 'id'>;
-  defaultLayout: Omit<WidgetLayout, 'i'>;
 }

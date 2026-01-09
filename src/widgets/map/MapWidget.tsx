@@ -76,12 +76,12 @@ export function MapWidget({ config }: WidgetProps<MapWidgetConfig>) {
     return geoFocus;
   }, [geoFocus, config.id]);
 
-  // Format tone as color
+  // Format tone as color using design system variables
   const getToneColor = (tone?: number): string => {
-    if (tone === undefined) return '#3b82f6';
-    if (tone > 2) return '#22c55e'; // positive - green
-    if (tone < -2) return '#ef4444'; // negative - red
-    return '#eab308'; // neutral - yellow
+    if (tone === undefined) return 'var(--color-primary)';
+    if (tone > 2) return 'var(--color-positive)';
+    if (tone < -2) return 'var(--color-destructive)';
+    return 'var(--color-neutral)';
   };
 
   return (
@@ -177,23 +177,23 @@ function EventPopup({ event, toneColor }: { event: GeoEvent; toneColor: string }
 
       <div className="space-y-1 text-xs">
         <div className="flex items-center justify-between">
-          <span className="text-gray-500">Source:</span>
+          <span className="text-[var(--color-muted)]">Source:</span>
           <span className="font-medium">{event.sourceName}</span>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-gray-500">Location:</span>
+          <span className="text-[var(--color-muted)]">Location:</span>
           <span>{event.locations[0]?.name || 'Unknown'}</span>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-gray-500">Time:</span>
+          <span className="text-[var(--color-muted)]">Time:</span>
           <span>{formatDistanceToNow(event.publishedAt, { addSuffix: true })}</span>
         </div>
 
         {event.tone !== undefined && (
           <div className="flex items-center justify-between">
-            <span className="text-gray-500">Sentiment:</span>
+            <span className="text-[var(--color-muted)]">Sentiment:</span>
             <span
               className="px-1.5 py-0.5 rounded text-white text-[10px] font-medium"
               style={{ backgroundColor: toneColor }}
@@ -208,7 +208,7 @@ function EventPopup({ event, toneColor }: { event: GeoEvent; toneColor: string }
         href={event.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 flex items-center justify-center gap-1 w-full py-1.5 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+        className="mt-3 flex items-center justify-center gap-1 w-full py-1.5 bg-[var(--color-primary)] text-white text-xs rounded hover:opacity-90 transition-opacity"
       >
         Read Article
         <ExternalLink className="w-3 h-3" />

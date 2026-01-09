@@ -58,7 +58,7 @@ export function WidgetWrapper({
           </button>
           <button
             onClick={onRemove}
-            className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+            className="p-1 rounded hover:bg-[var(--color-destructive)]/10 transition-colors"
             title="Remove widget"
           >
             <X className="w-4 h-4 text-(--color-muted) hover:text-(--color-destructive)" />
