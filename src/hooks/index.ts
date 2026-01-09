@@ -1,2 +1,2 @@
-export { useGdeltGeo } from './useGdeltGeo';
 export { useGdeltEvents } from './useGdeltEvents';
+export { useClickOutside } from './useClickOutside';

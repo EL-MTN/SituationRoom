@@ -1,8 +1,6 @@
 import type {
   GdeltDocArticle,
-  GdeltGeoFeature,
   NormalizedEvent,
-  GeoEvent,
 } from '../../types';
 
 function parseGdeltDate(dateStr: string): Date {
@@ -75,43 +73,7 @@ export function transformDocArticle(article: GdeltDocArticle): NormalizedEvent {
   };
 }
 
-export function transformGeoFeature(feature: GdeltGeoFeature): GeoEvent {
-  const props = feature.properties;
-  const [lng, lat] = feature.geometry.coordinates; // GeoJSON is [lng, lat]
-  const publishedAt = parseGdeltDate(props.urlpubtimedate);
-
-  return {
-    id: generateId(props.url, props.urlpubtimedate),
-    title: props.urltitle || props.name || 'Untitled',
-    url: props.url,
-    sourceUrl: props.domain,
-    sourceName: extractDomainName(props.domain),
-    sourceCountry: props.sourcecountry || 'Unknown',
-    language: props.language || 'en',
-    publishedAt,
-    seenAt: publishedAt,
-    imageUrl: props.urlsocialimage || undefined,
-    tone: props.tone,
-    locations: [
-      {
-        name: props.name,
-        type: 'unknown',
-        lat,
-        lng,
-      },
-    ],
-    coordinates: [lat, lng], // Leaflet uses [lat, lng]
-    allMentionedNames: props.allmentionednames,
-    raw: feature,
-  };
-}
-
 export function transformDocResponse(articles: GdeltDocArticle[]): NormalizedEvent[] {
   if (!articles || !Array.isArray(articles)) return [];
   return articles.map(transformDocArticle);
-}
-
-export function transformGeoResponse(features: GdeltGeoFeature[]): GeoEvent[] {
-  if (!features || !Array.isArray(features)) return [];
-  return features.map(transformGeoFeature);
 }

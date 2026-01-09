@@ -11,14 +11,8 @@ import type {
 const defaultMapConfig: Omit<MapWidgetConfig, 'id'> = {
   type: 'map',
   title: 'Map',
-  pollIntervalMs: 60000,
-  filters: {
-    query: '',
-    timespan: '24h',
-  },
   center: [20, 0],
   zoom: 2,
-  showClustering: true,
 };
 
 const defaultEventFeedConfig: Omit<EventFeedWidgetConfig, 'id'> = {

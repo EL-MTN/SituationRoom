@@ -17,11 +17,12 @@ export interface BaseWidgetConfig {
 }
 
 /** Map-specific configuration */
-export interface MapWidgetConfig extends BaseWidgetConfig {
+export interface MapWidgetConfig {
+  id: string;
   type: 'map';
+  title: string;
   center: [number, number];
   zoom: number;
-  showClustering: boolean;
 }
 
 /** Event feed-specific configuration */

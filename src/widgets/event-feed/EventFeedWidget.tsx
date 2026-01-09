@@ -8,7 +8,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
-  const { selectedEvent, selectEvent, setGeoFocus } = useEvents();
+  const { selectedEvent, selectEvent } = useEvents();
 
   const { data: events = [], isLoading, dataUpdatedAt } = useGdeltEvents({
     filters: config.filters,
@@ -41,16 +41,6 @@ export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) 
   // Handle event click
   const handleEventClick = (event: NormalizedEvent) => {
     selectEvent(event.id, 'event-feed');
-
-    // If event has location, update geo focus
-    if (event.locations.length > 0) {
-      const loc = event.locations[0];
-      setGeoFocus({
-        center: [loc.lat, loc.lng],
-        zoom: 8,
-        source: config.id,
-      });
-    }
   };
 
   // Highlight keywords in title

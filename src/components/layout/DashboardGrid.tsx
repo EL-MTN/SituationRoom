@@ -206,6 +206,7 @@ export function DashboardGrid({ dashboard }: DashboardGridProps) {
         }}
         dragConfig={{
           enabled: true,
+          handle: '.widget-drag-handle',
         }}
         compactor={noCompactPreventCollision}
       >

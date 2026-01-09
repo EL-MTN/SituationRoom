@@ -1,12 +1,10 @@
 export const GDELT_CONFIG = {
   baseUrl: 'https://api.gdeltproject.org/api/v2',
   docEndpoint: '/doc/doc',
-  geoEndpoint: '/geo/geo',
 
   defaults: {
     timespan: '24h',
     maxRecords: 100,
-    maxPoints: 500,
     format: 'json',
     sort: 'datedesc',
   },

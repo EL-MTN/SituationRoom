@@ -5,13 +5,11 @@ import {
   useCallback,
   type ReactNode,
 } from 'react';
-import type { EventSelection, GeoFocus } from '../types';
+import type { EventSelection } from '../types';
 
 interface EventContextValue {
   selectedEvent: EventSelection;
-  geoFocus: GeoFocus | null;
-  selectEvent: (eventId: string | null, source: 'map' | 'event-feed') => void;
-  setGeoFocus: (focus: GeoFocus | null) => void;
+  selectEvent: (eventId: string | null, source: 'event-feed') => void;
 }
 
 const EventContext = createContext<EventContextValue | null>(null);
@@ -22,9 +20,8 @@ export function EventProvider({ children }: { children: ReactNode }) {
     source: null,
     timestamp: 0,
   });
-  const [geoFocus, setGeoFocusState] = useState<GeoFocus | null>(null);
 
-  const selectEvent = useCallback((eventId: string | null, source: 'map' | 'event-feed') => {
+  const selectEvent = useCallback((eventId: string | null, source: 'event-feed') => {
     setSelectedEvent({
       eventId,
       source,
@@ -32,15 +29,9 @@ export function EventProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const setGeoFocus = useCallback((focus: GeoFocus | null) => {
-    setGeoFocusState(focus);
-  }, []);
-
   const value: EventContextValue = {
     selectedEvent,
-    geoFocus,
     selectEvent,
-    setGeoFocus,
   };
 
   return <EventContext.Provider value={value}>{children}</EventContext.Provider>;
