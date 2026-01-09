@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
-import RGL, { noCompactor } from 'react-grid-layout';
+import RGL, { getCompactor } from 'react-grid-layout';
 import { useDashboard } from '../../stores';
 import { WidgetWrapper } from '../../widgets/WidgetWrapper';
 import { MapWidget } from '../../widgets/map/MapWidget';
@@ -29,6 +29,9 @@ interface DashboardGridProps {
 
 // Grid padding around the edges (no margin between cells for perfect alignment)
 const GRID_PADDING = 4;
+
+// Compactor: no auto-compaction, no overlap, prevent collision (snap back if dropped on another)
+const noCompactPreventCollision = getCompactor(null, false, true);
 
 export function DashboardGrid({ dashboard }: DashboardGridProps) {
   const { updateLayouts, removeWidget, updateWidgetConfig } = useDashboard();
@@ -205,7 +208,7 @@ export function DashboardGrid({ dashboard }: DashboardGridProps) {
         dragConfig={{
           enabled: true,
         }}
-        compactor={noCompactor}
+        compactor={noCompactPreventCollision}
       >
         {dashboard.widgets.map((widget) => (
           <div key={widget.config.id}>
