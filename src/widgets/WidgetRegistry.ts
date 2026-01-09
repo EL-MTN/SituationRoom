@@ -36,7 +36,7 @@ const defaultEventFeedConfig: Omit<EventFeedWidgetConfig, 'id'> = {
 
 // Default widget dimensions by type
 const WIDGET_SIZES: Record<WidgetType, { w: number; h: number; minW: number; minH: number }> = {
-  'map': { w: 4, h: 5, minW: 2, minH: 3 },
+  'map': { w: 4, h: 5, minW: 4, minH: 3 },
   'event-feed': { w: 4, h: 5, minW: 4, minH: 3 },
 };
 

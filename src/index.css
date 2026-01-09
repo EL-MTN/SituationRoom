@@ -82,8 +82,7 @@
 
   .react-grid-item > .react-resizable-handle {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    z-index: 1000;
   }
 
   /* Hide all visual indicators - keep handles functional but invisible */
@@ -91,36 +90,48 @@
     display: none;
   }
 
+  /* Corner handles - small squares */
   .react-grid-item > .react-resizable-handle.react-resizable-handle-se {
     bottom: 0;
     right: 0;
+    width: 12px;
+    height: 12px;
     cursor: se-resize;
   }
 
   .react-grid-item > .react-resizable-handle.react-resizable-handle-sw {
     bottom: 0;
     left: 0;
+    width: 12px;
+    height: 12px;
     cursor: sw-resize;
   }
 
+  /* Edge handles - span the full edge */
   .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
     right: 0;
-    top: 0;
-    height: 100%;
+    top: 12px;
+    bottom: 12px;
+    width: 8px;
+    height: auto;
     cursor: e-resize;
   }
 
   .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
     left: 0;
-    top: 0;
-    height: 100%;
+    top: 12px;
+    bottom: 12px;
+    width: 8px;
+    height: auto;
     cursor: w-resize;
   }
 
   .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
     bottom: 0;
-    left: 0;
-    width: 100%;
+    left: 12px;
+    right: 12px;
+    height: 8px;
+    width: auto;
     cursor: s-resize;
   }
 }

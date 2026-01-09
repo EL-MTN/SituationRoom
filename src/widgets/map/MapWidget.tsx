@@ -42,7 +42,7 @@ const selectedIcon = new L.Icon({
   className: 'selected-marker',
 });
 
-// Map controller component for external navigation
+// Map controller component for external navigation and resize handling
 function MapController({ geoFocus }: { geoFocus: { center: [number, number]; zoom: number } | null }) {
   const map = useMap();
 
@@ -51,6 +51,16 @@ function MapController({ geoFocus }: { geoFocus: { center: [number, number]; zoo
       map.flyTo(geoFocus.center, geoFocus.zoom, { duration: 1 });
     }
   }, [geoFocus, map]);
+
+  // Handle container resize - Leaflet needs invalidateSize() when container changes
+  useEffect(() => {
+    const container = map.getContainer();
+    const resizeObserver = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
+  }, [map]);
 
   return null;
 }
