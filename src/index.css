@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* Leaflet CSS */
+@import "leaflet/dist/leaflet.css";
+
+/* react-grid-layout CSS */
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
+
+/* Custom base styles */
+@layer base {
+  :root {
+    --color-background: #ffffff;
+    --color-foreground: #0f172a;
+    --color-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-primary: #3b82f6;
+    --color-primary-foreground: #ffffff;
+    --color-accent: #f1f5f9;
+    --color-destructive: #ef4444;
+  }
+
+  .dark {
+    --color-background: #0f172a;
+    --color-foreground: #f8fafc;
+    --color-muted: #94a3b8;
+    --color-border: #334155;
+    --color-primary: #3b82f6;
+    --color-primary-foreground: #ffffff;
+    --color-accent: #1e293b;
+    --color-destructive: #ef4444;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* react-grid-layout customization */
+@layer components {
+  .react-grid-layout {
+    position: relative;
+  }
+
+  .react-grid-item {
+    transition: all 200ms ease;
+    transition-property: left, top;
+  }
+
+  .react-grid-item.cssTransforms {
+    transition-property: transform;
+  }
+
+  .react-grid-item.resizing {
+    z-index: 1;
+    will-change: width, height;
+  }
+
+  .react-grid-item.react-draggable-dragging {
+    transition: none;
+    z-index: 3;
+    will-change: transform;
+  }
+
+  .react-grid-item > .react-resizable-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Hide all visual indicators - keep handles functional but invisible */
+  .react-grid-item > .react-resizable-handle::after {
+    display: none;
+  }
+
+  .react-grid-item > .react-resizable-handle.react-resizable-handle-se {
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+  }
+
+  .react-grid-item > .react-resizable-handle.react-resizable-handle-sw {
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+  }
+
+  .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
+    right: 0;
+    top: 0;
+    height: 100%;
+    cursor: e-resize;
+  }
+
+  .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
+    left: 0;
+    top: 0;
+    height: 100%;
+    cursor: w-resize;
+  }
+
+  .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    cursor: s-resize;
+  }
+}
+
+/* Leaflet map customization */
+@layer components {
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 0.5rem;
+  }
+
+  .marker-cluster-small,
+  .marker-cluster-medium,
+  .marker-cluster-large {
+    background-color: rgba(59, 130, 246, 0.5);
+  }
+
+  .marker-cluster-small div,
+  .marker-cluster-medium div,
+  .marker-cluster-large div {
+    background-color: rgba(59, 130, 246, 0.8);
+    color: white;
+    font-weight: 600;
+  }
+}
