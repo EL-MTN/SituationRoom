@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
 import { SettingsPopover } from './SettingsPopover';

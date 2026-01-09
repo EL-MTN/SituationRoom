@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { MarketSearchPopover } from './MarketSearchPopover';

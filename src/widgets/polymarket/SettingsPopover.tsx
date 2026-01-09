@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import type { PolymarketWidgetConfig, PriceHistoryInterval } from './PolymarketWidget.types';

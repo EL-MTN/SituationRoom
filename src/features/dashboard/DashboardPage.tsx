@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { Globe, Plus, Settings } from 'lucide-react';
 import { DashboardGrid } from '../../components/layout/DashboardGrid';

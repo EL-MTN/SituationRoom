@@ -1,10 +1,10 @@
 import { Globe } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
-import { MapWidget } from './MapWidget';
+import { MapWidgetDynamic } from './MapWidgetDynamic';
 import { MapWidgetHeader } from './MapWidgetHeader';
 import type { MapWidgetConfig } from './MapWidget.types';
 
-// Self-register on import
+// Self-register on import - use dynamic component to avoid SSR issues with Leaflet
 WidgetRegistry.register<MapWidgetConfig>({
   metadata: {
     type: 'map',
@@ -22,12 +22,14 @@ WidgetRegistry.register<MapWidgetConfig>({
     },
     layout: { w: 8, h: 10, minW: 4, minH: 3 },
   },
-  component: MapWidget,
+  component: MapWidgetDynamic,
   headerActions: MapWidgetHeader,
 });
 
 // Re-export for direct usage if needed
-export { MapWidget } from './MapWidget';
+// Note: MapWidget is not exported directly to avoid SSR issues with Leaflet
+// Use MapWidgetDynamic instead which handles client-only loading
+export { MapWidgetDynamic } from './MapWidgetDynamic';
 export { MapWidgetHeader } from './MapWidgetHeader';
 export { LocationSearchPopover } from './LocationSearchPopover';
 export type { MapWidgetConfig } from './MapWidget.types';

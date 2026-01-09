@@ -1,3 +1,5 @@
+'use client'
+
 import { TrendingUp, TrendingDown, Activity, DollarSign } from 'lucide-react';
 import { usePolymarketEvent, usePolymarketPriceHistory } from '../../hooks';
 import type { WidgetProps } from '../registry';

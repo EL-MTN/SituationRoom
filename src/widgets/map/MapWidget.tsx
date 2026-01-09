@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';

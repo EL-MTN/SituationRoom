@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useRef } from 'react';
 import { MapPin } from 'lucide-react';
 import { LocationSearchPopover } from './LocationSearchPopover';

@@ -1,3 +1,5 @@
+'use client'
+
 import { X, RefreshCw, GripVertical } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
 import type { BaseWidgetConfig } from '../registry';

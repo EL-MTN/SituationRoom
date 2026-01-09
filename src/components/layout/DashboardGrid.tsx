@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import RGL, { getCompactor } from 'react-grid-layout';
 import { useDashboard } from '../../stores';

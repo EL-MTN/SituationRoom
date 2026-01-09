@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, Newspaper, Clock, Globe } from 'lucide-react';
