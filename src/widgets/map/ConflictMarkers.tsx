@@ -29,7 +29,7 @@ function createConflictIcon(count: number) {
       background: ${color};
       width: ${size}px;
       height: ${size}px;
-      border-radius: 50%;
+      border-radius: 0;
       border: 2px solid rgba(255,255,255,0.8);
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       display: flex;
@@ -56,7 +56,7 @@ function createClusterIcon(cluster: MarkerCluster) {
       background: linear-gradient(135deg, #dc2626, #991b1b);
       width: ${size}px;
       height: ${size}px;
-      border-radius: 50%;
+      border-radius: 0;
       border: 3px solid rgba(255,255,255,0.9);
       box-shadow: 0 3px 6px rgba(0,0,0,0.4);
       display: flex;

@@ -17,7 +17,7 @@ export function EventFeedWidgetHeader({
       <button
         onClick={() => setShowSearchPopover(!showSearchPopover)}
         onMouseDown={(e) => e.stopPropagation()}
-        className={`flex items-center gap-1.5 px-2 py-1 rounded text-sm transition-colors ${
+        className={`flex items-center gap-1.5 px-2 py-1 text-sm transition-colors ${
           config.filters.query
             ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
             : 'hover:bg-[var(--color-accent)] text-[var(--color-muted)]'

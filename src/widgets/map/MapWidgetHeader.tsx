@@ -41,7 +41,7 @@ export function MapWidgetHeader({
           e.stopPropagation();
           setShowLocationPopover(!showLocationPopover);
         }}
-        className={`flex items-center gap-1.5 px-2 py-1 rounded text-sm transition-colors ${
+        className={`flex items-center gap-1.5 px-2 py-1 text-sm transition-colors ${
           hasLocation
             ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
             : 'hover:bg-[var(--color-accent)] text-[var(--color-muted)]'

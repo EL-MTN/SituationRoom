@@ -64,7 +64,7 @@ export function EventFeedSearchPopover({
     <div
       ref={popoverRef}
       onMouseDown={(e) => e.stopPropagation()}
-      className="absolute top-full left-0 right-0 mx-2 mt-1 z-50 bg-[var(--color-background)] border border-[var(--color-border)] rounded-lg shadow-lg p-3"
+      className="absolute top-full left-0 right-0 mx-2 mt-1 z-50 bg-[var(--color-background)] border border-[var(--color-border)] shadow-lg p-3"
     >
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium text-[var(--color-muted)]">
@@ -78,11 +78,11 @@ export function EventFeedSearchPopover({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="e.g., ukraine, climate, elections"
-            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-[var(--color-border)] rounded bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-[var(--color-border)] bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
           />
           <button
             onClick={handleSubmit}
-            className="px-3 py-1.5 text-sm bg-[var(--color-primary)] text-white rounded hover:opacity-90 transition-opacity flex-shrink-0"
+            className="px-3 py-1.5 text-sm bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity flex-shrink-0"
           >
             Search
           </button>

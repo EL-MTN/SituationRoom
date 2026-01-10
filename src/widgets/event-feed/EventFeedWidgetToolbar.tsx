@@ -16,7 +16,7 @@ export function EventFeedWidgetToolbar({
     <div className="relative">
       <button
         onClick={() => setShowSettings(!showSettings)}
-        className="p-1 rounded hover:bg-(--color-accent) transition-colors"
+        className="p-1 hover:bg-(--color-accent) transition-colors"
         title="Settings"
       >
         <Settings className="w-4 h-4 text-(--color-muted)" />

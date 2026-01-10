@@ -128,7 +128,7 @@ export function LocationSearchPopover({
         width: position.width,
         zIndex: 9999,
       }}
-      className="bg-[var(--color-background)] border border-[var(--color-border)] rounded-lg shadow-lg p-3"
+      className="bg-[var(--color-background)] border border-[var(--color-border)] shadow-lg p-3"
     >
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium text-[var(--color-muted)]">
@@ -142,20 +142,20 @@ export function LocationSearchPopover({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="e.g., Tokyo, New York, Paris"
-            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-[var(--color-border)] rounded bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-[var(--color-border)] bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
           />
           <button
             type="button"
             onClick={searchLocation}
             disabled={isSearching}
-            className="px-3 py-1.5 text-sm bg-[var(--color-primary)] text-white rounded hover:opacity-90 transition-opacity flex-shrink-0 disabled:opacity-50"
+            className="px-3 py-1.5 text-sm bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity flex-shrink-0 disabled:opacity-50"
           >
             {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
           </button>
         </div>
 
         {results.length > 0 && (
-          <div className="mt-1 max-h-[200px] overflow-y-auto border border-[var(--color-border)] rounded">
+          <div className="mt-1 max-h-[200px] overflow-y-auto border border-[var(--color-border)]">
             {results.map((result) => (
               <button
                 type="button"

@@ -34,7 +34,7 @@ function OddsBar({ outcome, price, isYes }: OddsBarProps) {
         <span className="font-medium">{outcome}</span>
         <span className={`font-bold ${textColor}`}>{formatPercent(price)}</span>
       </div>
-      <div className="h-3 bg-[var(--color-accent)] rounded-full overflow-hidden">
+      <div className="h-3 bg-[var(--color-accent)] overflow-hidden">
         <div
           className={`h-full ${bgColor} transition-all duration-500`}
           style={{ width: `${percent}%` }}

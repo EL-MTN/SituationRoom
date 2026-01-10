@@ -26,7 +26,7 @@ export function SettingsPopover({
   return (
     <div
       ref={popoverRef}
-      className="absolute top-full right-0 mt-1 z-50 bg-[var(--color-background)] border border-[var(--color-border)] rounded-lg shadow-lg p-3 min-w-[180px]"
+      className="absolute top-full right-0 mt-1 z-50 bg-[var(--color-background)] border border-[var(--color-border)] shadow-lg p-3 min-w-[180px]"
     >
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium text-[var(--color-muted)]">
@@ -39,7 +39,7 @@ export function SettingsPopover({
               filters: { ...config.filters, timespan: e.target.value },
             });
           }}
-          className="w-full px-2 py-1.5 text-sm border border-[var(--color-border)] rounded bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="w-full px-2 py-1.5 text-sm border border-[var(--color-border)] bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
         >
           <option value="15min">15 minutes</option>
           <option value="30min">30 minutes</option>

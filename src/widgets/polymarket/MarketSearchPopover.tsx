@@ -101,7 +101,7 @@ export function MarketSearchPopover({
         width: position.width,
         zIndex: 9999,
       }}
-      className="bg-[var(--color-background)] border border-[var(--color-border)] rounded-lg shadow-lg p-3"
+      className="bg-[var(--color-background)] border border-[var(--color-border)] shadow-lg p-3"
     >
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium text-[var(--color-muted)]">
@@ -114,7 +114,7 @@ export function MarketSearchPopover({
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="e.g., Trump, Bitcoin, Fed rate"
-          className="w-full px-2 py-1.5 text-sm border border-[var(--color-border)] rounded bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="w-full px-2 py-1.5 text-sm border border-[var(--color-border)] bg-[var(--color-background)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
         />
 
         {(isLoading || (query !== debouncedQuery && query.trim().length >= 2)) && (
@@ -124,7 +124,7 @@ export function MarketSearchPopover({
         )}
 
         {!isLoading && query === debouncedQuery && results.length > 0 && (
-          <div className="mt-1 max-h-[250px] overflow-y-auto border border-[var(--color-border)] rounded">
+          <div className="mt-1 max-h-[250px] overflow-y-auto border border-[var(--color-border)]">
             {results.map((result) => {
               const yesPrice = result.outcomePrices?.[0] || '0.5';
               return (

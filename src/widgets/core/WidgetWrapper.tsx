@@ -31,7 +31,7 @@ export function WidgetWrapper({
   const ToolbarItems = definition?.toolbarItems;
 
   return (
-    <div className="h-full flex flex-col bg-(--color-background) border border-(--color-border) rounded-lg shadow-sm">
+    <div className="h-full flex flex-col bg-(--color-background) border border-(--color-border) shadow-sm">
       {/* Header */}
       <div className="relative flex items-center justify-between px-3 py-2 border-b border-(--color-border) bg-(--color-accent)/50 overflow-visible z-20">
         <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export function WidgetWrapper({
 
           <button
             onClick={onRemove}
-            className="p-1 rounded hover:bg-[var(--color-destructive)]/10 transition-colors"
+            className="p-1 hover:bg-[var(--color-destructive)]/10 transition-colors"
             title="Remove widget"
           >
             <X className="w-4 h-4 text-(--color-muted) hover:text-(--color-destructive)" />
@@ -87,7 +87,7 @@ export function WidgetWrapper({
 
       {/* Content */}
       <div
-        className="flex-1 overflow-hidden min-h-0 rounded-b-lg"
+        className="flex-1 overflow-hidden min-h-0"
         onMouseDown={(e) => e.stopPropagation()}
       >
         {children}

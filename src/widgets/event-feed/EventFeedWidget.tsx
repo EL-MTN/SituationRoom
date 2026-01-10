@@ -61,7 +61,7 @@ export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) 
       config.highlightKeywords.some(
         (k) => k.toLowerCase() === part.toLowerCase()
       ) ? (
-        <mark key={i} className="bg-[var(--color-highlight)] px-0.5 rounded">
+        <mark key={i} className="bg-[var(--color-highlight)] px-0.5">
           {part}
         </mark>
       ) : (
@@ -169,7 +169,7 @@ function EventItem({ event, isSelected, showImage, onClick, highlightText }: Eve
         <img
           src={event.imageUrl}
           alt=""
-          className="w-12 h-9 object-cover rounded flex-shrink-0"
+          className="w-12 h-9 object-cover flex-shrink-0"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
@@ -198,7 +198,7 @@ function EventItem({ event, isSelected, showImage, onClick, highlightText }: Eve
         href={event.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex-shrink-0 p-1.5 rounded hover:bg-[var(--color-accent)] transition-colors"
+        className="flex-shrink-0 p-1.5 hover:bg-[var(--color-accent)] transition-colors"
         onClick={(e) => e.stopPropagation()}
         title="Open article"
       >
