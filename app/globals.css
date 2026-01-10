@@ -44,11 +44,17 @@
   }
 }
 
+/* Grid resize handles - must be above map layers */
+.react-resizable-handle {
+  z-index: 1000 !important;
+}
+
 /* Leaflet map customization */
 @layer components {
   .leaflet-container {
     height: 100%;
     width: 100%;
+    z-index: 0;
   }
 
   .marker-cluster-small,
