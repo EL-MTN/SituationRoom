@@ -4,6 +4,7 @@ import type { MapWidgetConfig } from '../widgets/map/MapWidget.types';
 import type { EventFeedWidgetConfig } from '../widgets/event-feed/EventFeedWidget.types';
 import type { PolymarketWidgetConfig, PriceHistoryInterval } from '../widgets/polymarket/PolymarketWidget.types';
 import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/BlueskyFeedWidget.types';
+import type { YoutubeWidgetConfig } from '../widgets/youtube/YoutubeWidget.types';
 
 // Schema version for future migrations
 const SCHEMA_VERSION = 1;
@@ -14,6 +15,7 @@ const TYPE_TO_SHORT: Record<string, string> = {
   'event-feed': 'e',
   'polymarket': 'p',
   'bluesky-feed': 'b',
+  'youtube': 'y',
 };
 
 const SHORT_TO_TYPE: Record<string, string> = {
@@ -21,6 +23,7 @@ const SHORT_TO_TYPE: Record<string, string> = {
   'e': 'event-feed',
   'p': 'polymarket',
   'b': 'bluesky-feed',
+  'y': 'youtube',
 };
 
 // Minimal state schema
@@ -167,6 +170,13 @@ function configToMinimal(config: WidgetConfig): Record<string, unknown> {
       return c;
     }
 
+    case 'youtube': {
+      const ytConfig = config as YoutubeWidgetConfig;
+      const c: Record<string, unknown> = {};
+      if (ytConfig.videoUrl) c.u = ytConfig.videoUrl;
+      return c;
+    }
+
     default:
       return {};
   }
@@ -267,6 +277,16 @@ function minimalToConfig(c: Record<string, unknown>, type: string, id: string): 
         maxResults: (c.m as number) || 25,
         pollIntervalMs: (c.p as number) || 60000,
         showMedia: c.sm !== false,
+      };
+      return config;
+    }
+
+    case 'youtube': {
+      const config: YoutubeWidgetConfig = {
+        id,
+        type: 'youtube',
+        title: 'YouTube',
+        videoUrl: (c.u as string) || '',
       };
       return config;
     }
