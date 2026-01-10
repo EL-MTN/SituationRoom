@@ -14,6 +14,7 @@ import type {
   WidgetLayout,
 } from '../types';
 import { WidgetRegistry } from '../widgets';
+import type { DecodedDashboard } from '../utils/urlState';
 
 // State
 interface DashboardState {
@@ -30,7 +31,8 @@ type DashboardAction =
   | { type: 'ADD_WIDGET'; payload: { dashboardId: string; widget: { config: WidgetConfig; layout: WidgetLayout } } }
   | { type: 'REMOVE_WIDGET'; payload: { dashboardId: string; widgetId: string } }
   | { type: 'UPDATE_WIDGET_CONFIG'; payload: { dashboardId: string; widgetId: string; config: Partial<WidgetConfig> } }
-  | { type: 'UPDATE_LAYOUTS'; payload: { dashboardId: string; layouts: WidgetLayout[] } };
+  | { type: 'UPDATE_LAYOUTS'; payload: { dashboardId: string; layouts: WidgetLayout[] } }
+  | { type: 'LOAD_SHARED_STATE'; payload: { decoded: DecodedDashboard } };
 
 const DEFAULT_SETTINGS: DashboardSettings = {
   defaultPollIntervalMs: 60000,
@@ -163,6 +165,31 @@ function dashboardReducer(state: DashboardState, action: DashboardAction): Dashb
       };
     }
 
+    case 'LOAD_SHARED_STATE': {
+      const { decoded } = action.payload;
+      const newDashboardId = crypto.randomUUID();
+      const now = new Date();
+
+      // Create a new dashboard from the shared state
+      const newDashboard: Dashboard = {
+        id: newDashboardId,
+        name: 'Shared Dashboard',
+        createdAt: now,
+        updatedAt: now,
+        widgets: decoded.widgets,
+        settings: {
+          ...DEFAULT_SETTINGS,
+          ...decoded.settings,
+        },
+      };
+
+      return {
+        ...state,
+        dashboards: [newDashboard],
+        activeDashboardId: newDashboardId,
+      };
+    }
+
     default:
       return state;
   }
@@ -180,6 +207,7 @@ interface DashboardContextValue {
   removeWidget: (dashboardId: string, widgetId: string) => void;
   updateWidgetConfig: (dashboardId: string, widgetId: string, config: Partial<WidgetConfig>) => void;
   updateLayouts: (dashboardId: string, layouts: WidgetLayout[]) => void;
+  loadSharedState: (decoded: DecodedDashboard) => void;
 }
 
 const DashboardContext = createContext<DashboardContextValue | null>(null);
@@ -237,6 +265,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'UPDATE_LAYOUTS', payload: { dashboardId, layouts } });
   }, []);
 
+  const loadSharedState = useCallback((decoded: DecodedDashboard) => {
+    dispatch({ type: 'LOAD_SHARED_STATE', payload: { decoded } });
+  }, []);
+
   const value: DashboardContextValue = {
     state,
     activeDashboard,
@@ -248,6 +280,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     removeWidget,
     updateWidgetConfig,
     updateLayouts,
+    loadSharedState,
   };
 
   return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
