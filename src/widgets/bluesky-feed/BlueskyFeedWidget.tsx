@@ -1,16 +1,39 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { CloudSun } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useBlueskyFeed } from '../../hooks/useBlueskyFeed';
+import { getCredentials } from '../../services/bluesky';
 import type { WidgetProps } from '../registry';
 import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
 import { PostCard } from './PostCard';
+import { CredentialsForm } from './CredentialsForm';
 
 export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
+  const [hasCredentials, setHasCredentials] = useState<boolean | null>(null);
+
+  // Check for credentials on mount and when localStorage changes
+  useEffect(() => {
+    const checkCredentials = () => {
+      setHasCredentials(!!getCredentials());
+    };
+
+    checkCredentials();
+
+    // Listen for storage changes (in case credentials are updated in another tab)
+    window.addEventListener('storage', checkCredentials);
+
+    // Also poll occasionally in case credentials change in this tab
+    const interval = setInterval(checkCredentials, 1000);
+
+    return () => {
+      window.removeEventListener('storage', checkCredentials);
+      clearInterval(interval);
+    };
+  }, []);
 
   const {
     data: posts = [],
@@ -21,6 +44,7 @@ export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfi
     query: config.query,
     maxResults: config.maxResults,
     pollIntervalMs: config.pollIntervalMs,
+    enabled: hasCredentials === true && !!config.query,
   });
 
   const virtualizer = useVirtualizer({
@@ -29,6 +53,16 @@ export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfi
     estimateSize: () => (config.showMedia ? 160 : 100),
     overscan: 5,
   });
+
+  // Still loading credential check
+  if (hasCredentials === null) {
+    return null;
+  }
+
+  // No credentials - show login form
+  if (!hasCredentials) {
+    return <CredentialsForm />;
+  }
 
   if (!config.query) {
     return (
