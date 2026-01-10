@@ -4,6 +4,7 @@ import { X, RefreshCw, GripVertical } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
 import type { BaseWidgetConfig } from '../registry';
 import { formatRelativeTime } from '../../utils/formatRelativeTime';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 interface WidgetWrapperProps {
   config: BaseWidgetConfig;
@@ -90,7 +91,9 @@ export function WidgetWrapper({
         className="flex-1 overflow-hidden min-h-0"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </div>
     </div>
   );

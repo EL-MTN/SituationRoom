@@ -5,6 +5,8 @@ import {
   useContext,
   useReducer,
   useCallback,
+  useEffect,
+  useRef,
   type ReactNode,
 } from 'react';
 import type {
@@ -15,6 +17,7 @@ import type {
 } from '../types';
 import { WidgetRegistry } from '../widgets';
 import type { DecodedDashboard } from '../utils/urlState';
+import { saveDashboardState, loadDashboardState } from '../utils/localStorage';
 
 // State
 interface DashboardState {
@@ -32,7 +35,8 @@ type DashboardAction =
   | { type: 'REMOVE_WIDGET'; payload: { dashboardId: string; widgetId: string } }
   | { type: 'UPDATE_WIDGET_CONFIG'; payload: { dashboardId: string; widgetId: string; config: Partial<WidgetConfig> } }
   | { type: 'UPDATE_LAYOUTS'; payload: { dashboardId: string; layouts: WidgetLayout[] } }
-  | { type: 'LOAD_SHARED_STATE'; payload: { decoded: DecodedDashboard } };
+  | { type: 'LOAD_SHARED_STATE'; payload: { decoded: DecodedDashboard } }
+  | { type: 'LOAD_FROM_STORAGE'; payload: { state: DashboardState } };
 
 const DEFAULT_SETTINGS: DashboardSettings = {
   defaultPollIntervalMs: 60000,
@@ -190,6 +194,10 @@ function dashboardReducer(state: DashboardState, action: DashboardAction): Dashb
       };
     }
 
+    case 'LOAD_FROM_STORAGE': {
+      return action.payload.state;
+    }
+
     default:
       return state;
   }
@@ -215,6 +223,27 @@ const DashboardContext = createContext<DashboardContextValue | null>(null);
 // Provider
 export function DashboardProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(dashboardReducer, initialState);
+  const hasLoadedFromStorage = useRef(false);
+  const isFirstRender = useRef(true);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const savedState = loadDashboardState();
+    if (savedState && savedState.dashboards.length > 0) {
+      dispatch({ type: 'LOAD_FROM_STORAGE', payload: { state: savedState } });
+    }
+    hasLoadedFromStorage.current = true;
+  }, []);
+
+  // Save to localStorage on state changes (skip initial render and wait for load)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (!hasLoadedFromStorage.current) return;
+    saveDashboardState(state);
+  }, [state]);
 
   const activeDashboard = state.dashboards.find((d) => d.id === state.activeDashboardId) || null;
 

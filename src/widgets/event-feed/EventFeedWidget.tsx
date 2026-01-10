@@ -9,12 +9,13 @@ import { useEvents } from '../../stores';
 import type { WidgetProps } from '../registry';
 import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
 import type { NormalizedEvent } from '../../types';
+import { WidgetError } from '../../components/WidgetError';
 
 export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
   const { selectedEvent, selectEvent } = useEvents();
 
-  const { data: events = [], isLoading, dataUpdatedAt } = useGdeltEvents({
+  const { data: events = [], isLoading, error, refetch, dataUpdatedAt } = useGdeltEvents({
     filters: config.filters,
     timespan: config.filters.timespan,
     maxRecords: config.maxItems,
@@ -79,6 +80,10 @@ export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) 
         </div>
       </div>
     );
+  }
+
+  if (error && events.length === 0) {
+    return <WidgetError error={error} onRetry={() => refetch()} />;
   }
 
   if (events.length === 0) {

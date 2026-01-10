@@ -10,6 +10,7 @@ import type { WidgetProps } from '../registry';
 import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
 import { PostCard } from './PostCard';
 import { CredentialsForm } from './CredentialsForm';
+import { WidgetError } from '../../components/WidgetError';
 
 export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,7 @@ export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfi
     data: posts = [],
     isLoading,
     error,
+    refetch,
     dataUpdatedAt,
   } = useBlueskyFeed({
     query: config.query,
@@ -88,16 +90,8 @@ export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfi
     );
   }
 
-  if (error) {
-    return (
-      <div className="h-full flex items-center justify-center text-[var(--color-muted)] p-4">
-        <p className="text-sm text-center">
-          Failed to load posts.
-          <br />
-          {error.message}
-        </p>
-      </div>
-    );
+  if (error && posts.length === 0) {
+    return <WidgetError error={error} onRetry={() => refetch()} />;
   }
 
   if (posts.length === 0) {

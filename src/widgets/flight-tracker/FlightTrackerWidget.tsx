@@ -8,6 +8,7 @@ import type { WidgetProps } from '../registry';
 import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
 import { useFlightTracker } from '../../hooks';
 import { FlightMarker } from './FlightMarker';
+import { WidgetError } from '../../components/WidgetError';
 
 interface MapControllerProps {
   center: [number, number] | null;
@@ -50,7 +51,7 @@ export function FlightTrackerWidget({
   const onConfigChangeRef = useRef(onConfigChange);
   onConfigChangeRef.current = onConfigChange;
 
-  const { flight, trail, isLoading } = useFlightTracker({
+  const { flight, trail, isLoading, error, refetch } = useFlightTracker({
     callsign: config.callsign,
     pollIntervalMs: config.pollIntervalMs,
     enabled: !!config.callsign,
@@ -87,6 +88,10 @@ export function FlightTrackerWidget({
         </p>
       </div>
     );
+  }
+
+  if (error && !flight) {
+    return <WidgetError error={error} onRetry={() => refetch()} />;
   }
 
   return (

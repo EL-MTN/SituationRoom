@@ -17,6 +17,7 @@ interface UseFlightTrackerResult {
   trail: FlightPosition[];
   isLoading: boolean;
   error: Error | null;
+  refetch: () => void;
   dataUpdatedAt: number;
 }
 
@@ -87,6 +88,7 @@ export function useFlightTracker({
     trail: combinedTrail,
     isLoading: query.isLoading,
     error: query.error,
+    refetch: query.refetch,
     dataUpdatedAt: query.dataUpdatedAt,
   };
 }

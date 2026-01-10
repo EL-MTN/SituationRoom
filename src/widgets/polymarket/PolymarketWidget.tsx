@@ -6,6 +6,7 @@ import type { WidgetProps } from '../registry';
 import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
 import type { PolymarketMarket } from '../../types';
 import { PriceHistoryChart } from './PriceHistoryChart';
+import { WidgetError } from '../../components/WidgetError';
 
 function formatVolume(volume: number): string {
   if (volume >= 1_000_000) return `$${(volume / 1_000_000).toFixed(1)}M`;
@@ -126,7 +127,7 @@ function MarketCard({ market, priceHistory = [], isLoadingHistory }: MarketCardP
 }
 
 export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>) {
-  const { data: event, isLoading, error } = usePolymarketEvent({
+  const { data: event, isLoading, error, refetch } = usePolymarketEvent({
     slug: config.eventSlug,
     enabled: !!config.eventSlug,
   });
@@ -166,12 +167,17 @@ export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>
   }
 
   // Error
-  if (error || !event) {
+  if (error) {
+    return <WidgetError error={error} onRetry={() => refetch()} />;
+  }
+
+  // No data
+  if (!event) {
     return (
       <div className="h-full flex items-center justify-center text-[var(--color-muted)] p-4">
         <p className="text-sm text-center">
-          Failed to load market data.<br />
-          The market may have been removed.
+          Market not found.<br />
+          It may have been removed.
         </p>
       </div>
     );
