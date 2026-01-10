@@ -1,0 +1,1 @@
+export { searchPosts } from './blueskyClient';

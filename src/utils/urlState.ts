@@ -3,6 +3,7 @@ import type { Dashboard, DashboardSettings, WidgetInstance, WidgetConfig, Widget
 import type { MapWidgetConfig } from '../widgets/map/MapWidget.types';
 import type { EventFeedWidgetConfig } from '../widgets/event-feed/EventFeedWidget.types';
 import type { PolymarketWidgetConfig, PriceHistoryInterval } from '../widgets/polymarket/PolymarketWidget.types';
+import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/BlueskyFeedWidget.types';
 
 // Schema version for future migrations
 const SCHEMA_VERSION = 1;
@@ -12,12 +13,14 @@ const TYPE_TO_SHORT: Record<string, string> = {
   'map': 'm',
   'event-feed': 'e',
   'polymarket': 'p',
+  'bluesky-feed': 'b',
 };
 
 const SHORT_TO_TYPE: Record<string, string> = {
   'm': 'map',
   'e': 'event-feed',
   'p': 'polymarket',
+  'b': 'bluesky-feed',
 };
 
 // Minimal state schema
@@ -154,6 +157,16 @@ function configToMinimal(config: WidgetConfig): Record<string, unknown> {
       return c;
     }
 
+    case 'bluesky-feed': {
+      const bskyConfig = config as BlueskyFeedWidgetConfig;
+      const c: Record<string, unknown> = {};
+      if (bskyConfig.query) c.q = bskyConfig.query;
+      if (bskyConfig.maxResults !== 25) c.m = bskyConfig.maxResults;
+      if (bskyConfig.pollIntervalMs !== 60000) c.p = bskyConfig.pollIntervalMs;
+      if (!bskyConfig.showMedia) c.sm = false;
+      return c;
+    }
+
     default:
       return {};
   }
@@ -241,6 +254,19 @@ function minimalToConfig(c: Record<string, unknown>, type: string, id: string): 
         eventSlug: (c.s as string) || null,
         eventTitle: (c.et as string) || null,
         chartInterval: (c.i as PriceHistoryInterval) || '1d',
+      };
+      return config;
+    }
+
+    case 'bluesky-feed': {
+      const config: BlueskyFeedWidgetConfig = {
+        id,
+        type: 'bluesky-feed',
+        title: 'Bluesky Feed',
+        query: (c.q as string) || '',
+        maxResults: (c.m as number) || 25,
+        pollIntervalMs: (c.p as number) || 60000,
+        showMedia: c.sm !== false,
       };
       return config;
     }

@@ -17,8 +17,10 @@ export type {
 import './map';
 import './event-feed';
 import './polymarket';
+import './bluesky-feed';
 
 // Re-export widget types for convenience
 export type { MapWidgetConfig } from './map';
 export type { EventFeedWidgetConfig, EventFeedFilters } from './event-feed';
 export type { PolymarketWidgetConfig } from './polymarket';
+export type { BlueskyFeedWidgetConfig } from './bluesky-feed';
