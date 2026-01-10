@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { SettingsPopover } from './SettingsPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
 import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
@@ -11,6 +12,12 @@ export function BlueskyFeedWidgetToolbar({
   onConfigChange,
 }: WidgetHeaderExtensionProps<BlueskyFeedWidgetConfig>) {
   const [showSettings, setShowSettings] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleCredentialsChange = () => {
+    // Invalidate all bluesky queries to trigger refetch with new credentials
+    queryClient.invalidateQueries({ queryKey: ['bluesky-feed'] });
+  };
 
   return (
     <div className="relative">
@@ -26,6 +33,7 @@ export function BlueskyFeedWidgetToolbar({
         onClose={() => setShowSettings(false)}
         config={config}
         onConfigChange={onConfigChange}
+        onCredentialsChange={handleCredentialsChange}
       />
     </div>
   );

@@ -1,6 +1,4 @@
 export const BLUESKY_CONFIG = {
-  apiPath: '/api/bluesky/search',
-
   defaults: {
     maxResults: 25,
     pollIntervalMs: 60000,
