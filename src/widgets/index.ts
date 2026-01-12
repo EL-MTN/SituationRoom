@@ -20,6 +20,7 @@ import './polymarket';
 import './bluesky-feed';
 import './youtube';
 import './flight-tracker';
+import './notes';
 
 // Re-export widget types for convenience
 export type { MapWidgetConfig } from './map';
@@ -28,3 +29,4 @@ export type { PolymarketWidgetConfig } from './polymarket';
 export type { BlueskyFeedWidgetConfig } from './bluesky-feed';
 export type { YoutubeWidgetConfig } from './youtube';
 export type { FlightTrackerWidgetConfig } from './flight-tracker';
+export type { NotesWidgetConfig } from './notes';
