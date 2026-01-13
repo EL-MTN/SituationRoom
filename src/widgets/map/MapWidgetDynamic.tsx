@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import type { WidgetProps } from '../registry'
-import type { MapWidgetConfig } from './MapWidget.types'
+import type { MapWidgetConfig } from './types'
 
 // Dynamically import MapWidget with SSR disabled to avoid Leaflet's window access
 const MapWidgetInner = dynamic(

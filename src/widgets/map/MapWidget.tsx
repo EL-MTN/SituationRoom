@@ -4,10 +4,10 @@ import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { WidgetProps } from '../registry';
-import type { MapWidgetConfig } from './MapWidget.types';
-import { ConflictMarkers } from './ConflictMarkers';
-import { useGdeltGeoEvents } from '../../hooks';
 import { usePolling } from '../../stores';
+import { useGdeltGeoEvents } from './hooks';
+import type { MapWidgetConfig } from './types';
+import { ConflictMarkers } from './components/ConflictMarkers';
 
 interface MapControllerProps {
   center: [number, number];

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { SettingsPopover } from './SettingsPopover';
+import { SettingsPopover } from './components';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
+import type { BlueskyFeedWidgetConfig } from './types';
 
 export function BlueskyFeedWidgetToolbar({
   config,

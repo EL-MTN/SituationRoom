@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
-import { SettingsPopover } from './SettingsPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
+import { SettingsPopover } from './components';
+import type { PolymarketWidgetConfig } from './types';
 
 export function PolymarketWidgetToolbar({
   config,

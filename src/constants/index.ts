@@ -1,3 +1,2 @@
-export * from './gdelt.constants';
-export * from './polymarket.constants';
-export * from './bluesky.constants';
+// Constants barrel export
+// Widget-specific constants have been moved into their respective widget directories

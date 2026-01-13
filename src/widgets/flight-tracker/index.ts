@@ -3,7 +3,7 @@ import { WidgetRegistry } from '../registry';
 import { FlightTrackerWidgetDynamic } from './FlightTrackerWidgetDynamic';
 import { FlightTrackerWidgetHeader } from './FlightTrackerWidgetHeader';
 import { FlightTrackerWidgetToolbar } from './FlightTrackerWidgetToolbar';
-import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
+import type { FlightTrackerWidgetConfig } from './types';
 
 // Self-register on import
 WidgetRegistry.register<FlightTrackerWidgetConfig>({
@@ -34,4 +34,4 @@ WidgetRegistry.register<FlightTrackerWidgetConfig>({
 export { FlightTrackerWidgetDynamic } from './FlightTrackerWidgetDynamic';
 export { FlightTrackerWidgetHeader } from './FlightTrackerWidgetHeader';
 export { FlightTrackerWidgetToolbar } from './FlightTrackerWidgetToolbar';
-export type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
+export type { FlightTrackerWidgetConfig } from './types';

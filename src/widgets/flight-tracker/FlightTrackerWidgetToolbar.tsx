@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
-import { SettingsPopover } from './SettingsPopover';
+import { SettingsPopover } from './components';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
+import type { FlightTrackerWidgetConfig } from './types';
 
 export function FlightTrackerWidgetToolbar({
   config,

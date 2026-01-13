@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Settings } from 'lucide-react';
-import { SettingsPopover } from './SettingsPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
+import { SettingsPopover } from './components';
+import type { EventFeedWidgetConfig } from './types';
 
 export function EventFeedWidgetToolbar({
   config,

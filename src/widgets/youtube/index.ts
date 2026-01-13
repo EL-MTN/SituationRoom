@@ -2,7 +2,7 @@ import { Youtube } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
 import { YoutubeWidget } from './YoutubeWidget';
 import { YoutubeWidgetHeader } from './YoutubeWidgetHeader';
-import type { YoutubeWidgetConfig } from './YoutubeWidget.types';
+import type { YoutubeWidgetConfig } from './types';
 
 WidgetRegistry.register<YoutubeWidgetConfig>({
   metadata: {
@@ -25,4 +25,4 @@ WidgetRegistry.register<YoutubeWidgetConfig>({
 
 export { YoutubeWidget } from './YoutubeWidget';
 export { YoutubeWidgetHeader } from './YoutubeWidgetHeader';
-export type { YoutubeWidgetConfig } from './YoutubeWidget.types';
+export type { YoutubeWidgetConfig } from './types';

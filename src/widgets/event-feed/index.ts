@@ -3,7 +3,7 @@ import { WidgetRegistry } from '../registry';
 import { EventFeedWidget } from './EventFeedWidget';
 import { EventFeedWidgetHeader } from './EventFeedWidgetHeader';
 import { EventFeedWidgetToolbar } from './EventFeedWidgetToolbar';
-import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
+import type { EventFeedWidgetConfig } from './types';
 
 // Self-register on import
 WidgetRegistry.register<EventFeedWidgetConfig>({
@@ -37,6 +37,5 @@ WidgetRegistry.register<EventFeedWidgetConfig>({
 export { EventFeedWidget } from './EventFeedWidget';
 export { EventFeedWidgetHeader } from './EventFeedWidgetHeader';
 export { EventFeedWidgetToolbar } from './EventFeedWidgetToolbar';
-export { EventFeedSearchPopover } from './EventFeedSearchPopover';
-export { SettingsPopover } from './SettingsPopover';
-export type { EventFeedWidgetConfig, EventFeedFilters } from './EventFeedWidget.types';
+export { EventFeedSearchPopover, SettingsPopover } from './components';
+export type { EventFeedWidgetConfig, EventFeedFilters } from './types';

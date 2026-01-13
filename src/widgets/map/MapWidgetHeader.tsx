@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { MapPin } from 'lucide-react';
-import { LocationSearchPopover } from './LocationSearchPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { MapWidgetConfig } from './MapWidget.types';
+import { LocationSearchPopover } from './components';
+import type { MapWidgetConfig } from './types';
 
 export function MapWidgetHeader({
   config,

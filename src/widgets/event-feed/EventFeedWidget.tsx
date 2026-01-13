@@ -4,10 +4,10 @@ import { useRef, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, Newspaper, Clock, Globe } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { useGdeltEvents } from '../../hooks/useGdeltEvents';
 import { useEvents, usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
-import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
+import { useGdeltEvents } from './hooks';
+import type { EventFeedWidgetConfig } from './types';
 import type { NormalizedEvent } from '../../types';
 import { WidgetError } from '../../components/WidgetError';
 

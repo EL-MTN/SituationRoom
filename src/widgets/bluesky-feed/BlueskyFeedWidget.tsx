@@ -4,13 +4,12 @@ import { useRef, useState, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { CloudSun } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { useBlueskyFeed } from '../../hooks/useBlueskyFeed';
-import { getCredentials } from '../../services/bluesky';
+import { useBlueskyFeed } from './hooks';
+import { getCredentials } from './services';
 import { usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
-import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
-import { PostCard } from './PostCard';
-import { CredentialsForm } from './CredentialsForm';
+import type { BlueskyFeedWidgetConfig } from './types';
+import { PostCard, CredentialsForm } from './components';
 import { WidgetError } from '../../components/WidgetError';
 
 export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfig>) {

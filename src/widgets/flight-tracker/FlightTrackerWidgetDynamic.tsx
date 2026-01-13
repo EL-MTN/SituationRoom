@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import type { WidgetProps } from '../registry';
-import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
+import type { FlightTrackerWidgetConfig } from './types';
 
 const FlightTrackerWidgetInner = dynamic(
   () => import('./FlightTrackerWidget').then((mod) => mod.FlightTrackerWidget),

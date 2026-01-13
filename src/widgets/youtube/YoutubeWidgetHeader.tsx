@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Youtube } from 'lucide-react';
-import { VideoSelectPopover } from './VideoSelectPopover';
+import { VideoSelectPopover } from './components/VideoSelectPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { YoutubeWidgetConfig } from './YoutubeWidget.types';
+import type { YoutubeWidgetConfig } from './types';
 
 export function YoutubeWidgetHeader({
   config,

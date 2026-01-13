@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Search } from 'lucide-react';
-import { SearchPopover } from './SearchPopover';
+import { SearchPopover } from './components';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
+import type { BlueskyFeedWidgetConfig } from './types';
 
 export function BlueskyFeedWidgetHeader({
   config,

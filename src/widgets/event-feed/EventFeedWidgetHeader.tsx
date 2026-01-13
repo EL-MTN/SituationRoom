@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Search } from 'lucide-react';
-import { EventFeedSearchPopover } from './EventFeedSearchPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
+import { EventFeedSearchPopover } from './components';
+import type { EventFeedWidgetConfig } from './types';
 
 export function EventFeedWidgetHeader({
   config,

@@ -2,12 +2,11 @@
 
 import { useEffect } from 'react';
 import { TrendingUp, TrendingDown, Activity, DollarSign } from 'lucide-react';
-import { usePolymarketEvent, usePolymarketPriceHistory } from '../../hooks';
 import { usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
-import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
-import type { PolymarketMarket } from '../../types';
-import { PriceHistoryChart } from './PriceHistoryChart';
+import { usePolymarketEvent, usePolymarketPriceHistory } from './hooks';
+import type { PolymarketWidgetConfig, PolymarketMarket } from './types';
+import { PriceHistoryChart } from './components';
 import { WidgetError } from '../../components/WidgetError';
 
 function formatVolume(volume: number): string {

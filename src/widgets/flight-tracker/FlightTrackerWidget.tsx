@@ -5,10 +5,10 @@ import { MapContainer, TileLayer, useMap, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Plane } from 'lucide-react';
 import type { WidgetProps } from '../registry';
-import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
-import { useFlightTracker } from '../../hooks';
+import type { FlightTrackerWidgetConfig } from './types';
+import { useFlightTracker } from './hooks';
 import { usePolling } from '../../stores';
-import { FlightMarker } from './FlightMarker';
+import { FlightMarker } from './components/FlightMarker';
 import { WidgetError } from '../../components/WidgetError';
 
 interface MapControllerProps {

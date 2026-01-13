@@ -3,7 +3,7 @@ import { WidgetRegistry } from '../registry';
 import { PolymarketWidget } from './PolymarketWidget';
 import { PolymarketWidgetHeader } from './PolymarketWidgetHeader';
 import { PolymarketWidgetToolbar } from './PolymarketWidgetToolbar';
-import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
+import type { PolymarketWidgetConfig } from './types';
 
 // Self-register on import
 WidgetRegistry.register<PolymarketWidgetConfig>({
@@ -31,5 +31,5 @@ WidgetRegistry.register<PolymarketWidgetConfig>({
 // Re-export for direct usage if needed
 export { PolymarketWidget } from './PolymarketWidget';
 export { PolymarketWidgetHeader } from './PolymarketWidgetHeader';
-export { MarketSearchPopover } from './MarketSearchPopover';
-export type { PolymarketWidgetConfig, PriceHistoryInterval } from './PolymarketWidget.types';
+export { MarketSearchPopover } from './components';
+export type { PolymarketWidgetConfig, PriceHistoryInterval } from './types';

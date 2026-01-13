@@ -2,7 +2,7 @@ import { Globe } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
 import { MapWidgetDynamic } from './MapWidgetDynamic';
 import { MapWidgetHeader } from './MapWidgetHeader';
-import type { MapWidgetConfig } from './MapWidget.types';
+import type { MapWidgetConfig } from './types';
 
 // Self-register on import - use dynamic component to avoid SSR issues with Leaflet
 WidgetRegistry.register<MapWidgetConfig>({
@@ -31,5 +31,5 @@ WidgetRegistry.register<MapWidgetConfig>({
 // Use MapWidgetDynamic instead which handles client-only loading
 export { MapWidgetDynamic } from './MapWidgetDynamic';
 export { MapWidgetHeader } from './MapWidgetHeader';
-export { LocationSearchPopover } from './LocationSearchPopover';
-export type { MapWidgetConfig } from './MapWidget.types';
+export { LocationSearchPopover } from './components';
+export type { MapWidgetConfig } from './types';

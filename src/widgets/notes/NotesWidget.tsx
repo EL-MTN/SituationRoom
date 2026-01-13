@@ -1,7 +1,7 @@
 'use client';
 
 import type { WidgetProps } from '../registry';
-import type { NotesWidgetConfig } from './NotesWidget.types';
+import type { NotesWidgetConfig } from './types';
 
 export function NotesWidget({ config, onConfigChange }: WidgetProps<NotesWidgetConfig>) {
   return (

@@ -1,7 +1,7 @@
 import { FileText } from 'lucide-react';
 import { WidgetRegistry } from '../registry';
 import { NotesWidget } from './NotesWidget';
-import type { NotesWidgetConfig } from './NotesWidget.types';
+import type { NotesWidgetConfig } from './types';
 
 WidgetRegistry.register<NotesWidgetConfig>({
   metadata: {
@@ -22,4 +22,4 @@ WidgetRegistry.register<NotesWidgetConfig>({
 });
 
 export { NotesWidget } from './NotesWidget';
-export type { NotesWidgetConfig } from './NotesWidget.types';
+export type { NotesWidgetConfig } from './types';

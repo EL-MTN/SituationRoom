@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { Youtube } from 'lucide-react';
 import type { WidgetProps } from '../registry';
-import type { YoutubeWidgetConfig } from './YoutubeWidget.types';
+import type { YoutubeWidgetConfig } from './types';
 
 function extractVideoId(url: string): string | null {
   if (!url) return null;

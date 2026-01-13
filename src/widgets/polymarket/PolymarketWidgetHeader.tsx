@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Search } from 'lucide-react';
-import { MarketSearchPopover } from './MarketSearchPopover';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
+import { MarketSearchPopover } from './components';
+import type { PolymarketWidgetConfig } from './types';
 
 export function PolymarketWidgetHeader({
   config,

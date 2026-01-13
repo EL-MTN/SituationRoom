@@ -10,22 +10,22 @@ export type {
 } from '../widgets/registry';
 
 // Re-export widget-specific types
-export type { MapWidgetConfig } from '../widgets/map/MapWidget.types';
-export type { EventFeedWidgetConfig, EventFeedFilters } from '../widgets/event-feed/EventFeedWidget.types';
-export type { PolymarketWidgetConfig } from '../widgets/polymarket/PolymarketWidget.types';
-export type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/BlueskyFeedWidget.types';
-export type { YoutubeWidgetConfig } from '../widgets/youtube/YoutubeWidget.types';
-export type { FlightTrackerWidgetConfig } from '../widgets/flight-tracker/FlightTrackerWidget.types';
-export type { NotesWidgetConfig } from '../widgets/notes/NotesWidget.types';
+export type { MapWidgetConfig } from '../widgets/map/types';
+export type { EventFeedWidgetConfig, EventFeedFilters } from '../widgets/event-feed/types';
+export type { PolymarketWidgetConfig } from '../widgets/polymarket/types';
+export type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/types';
+export type { YoutubeWidgetConfig } from '../widgets/youtube/types';
+export type { FlightTrackerWidgetConfig } from '../widgets/flight-tracker/types';
+export type { NotesWidgetConfig } from '../widgets/notes/types';
 
 // Import types for local use
-import type { MapWidgetConfig } from '../widgets/map/MapWidget.types';
-import type { EventFeedWidgetConfig } from '../widgets/event-feed/EventFeedWidget.types';
-import type { PolymarketWidgetConfig } from '../widgets/polymarket/PolymarketWidget.types';
-import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/BlueskyFeedWidget.types';
-import type { YoutubeWidgetConfig } from '../widgets/youtube/YoutubeWidget.types';
-import type { FlightTrackerWidgetConfig } from '../widgets/flight-tracker/FlightTrackerWidget.types';
-import type { NotesWidgetConfig } from '../widgets/notes/NotesWidget.types';
+import type { MapWidgetConfig } from '../widgets/map/types';
+import type { EventFeedWidgetConfig } from '../widgets/event-feed/types';
+import type { PolymarketWidgetConfig } from '../widgets/polymarket/types';
+import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/types';
+import type { YoutubeWidgetConfig } from '../widgets/youtube/types';
+import type { FlightTrackerWidgetConfig } from '../widgets/flight-tracker/types';
+import type { NotesWidgetConfig } from '../widgets/notes/types';
 import type { WidgetLayout } from '../widgets/registry';
 
 // Union of all widget configs

@@ -1,10 +1,10 @@
 import LZString from 'lz-string';
 import type { Dashboard, DashboardSettings, WidgetInstance, WidgetConfig, WidgetLayout } from '../types';
-import type { MapWidgetConfig } from '../widgets/map/MapWidget.types';
-import type { EventFeedWidgetConfig } from '../widgets/event-feed/EventFeedWidget.types';
-import type { PolymarketWidgetConfig, PriceHistoryInterval } from '../widgets/polymarket/PolymarketWidget.types';
-import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/BlueskyFeedWidget.types';
-import type { YoutubeWidgetConfig } from '../widgets/youtube/YoutubeWidget.types';
+import type { MapWidgetConfig } from '../widgets/map/types';
+import type { EventFeedWidgetConfig } from '../widgets/event-feed/types';
+import type { PolymarketWidgetConfig, PriceHistoryInterval } from '../widgets/polymarket/types';
+import type { BlueskyFeedWidgetConfig } from '../widgets/bluesky-feed/types';
+import type { YoutubeWidgetConfig } from '../widgets/youtube/types';
 
 // Schema version for future migrations
 const SCHEMA_VERSION = 1;

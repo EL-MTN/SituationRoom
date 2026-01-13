@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { Plane } from 'lucide-react';
-import { FlightSearchPopover } from './FlightSearchPopover';
+import { FlightSearchPopover } from './components';
 import type { WidgetHeaderExtensionProps } from '../registry';
-import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
+import type { FlightTrackerWidgetConfig } from './types';
 
 export function FlightTrackerWidgetHeader({
   config,

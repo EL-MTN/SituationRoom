@@ -3,7 +3,7 @@ import { WidgetRegistry } from '../registry';
 import { BlueskyFeedWidget } from './BlueskyFeedWidget';
 import { BlueskyFeedWidgetHeader } from './BlueskyFeedWidgetHeader';
 import { BlueskyFeedWidgetToolbar } from './BlueskyFeedWidgetToolbar';
-import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
+import type { BlueskyFeedWidgetConfig } from './types';
 
 WidgetRegistry.register<BlueskyFeedWidgetConfig>({
   metadata: {
@@ -31,4 +31,4 @@ WidgetRegistry.register<BlueskyFeedWidgetConfig>({
 export { BlueskyFeedWidget } from './BlueskyFeedWidget';
 export { BlueskyFeedWidgetHeader } from './BlueskyFeedWidgetHeader';
 export { BlueskyFeedWidgetToolbar } from './BlueskyFeedWidgetToolbar';
-export type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
+export type { BlueskyFeedWidgetConfig } from './types';
