@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Globe, Plus, Settings, Share2, Check } from 'lucide-react';
 import { DashboardGrid } from '../../components/layout/DashboardGrid';
+import { GlobalRefreshControls } from '../../components/GlobalRefreshControls';
 import { useDashboard } from '../../stores';
 import { WidgetRegistry } from '../../widgets';
 import { useShareableUrl } from '../../hooks';
@@ -39,6 +40,8 @@ export function DashboardPage() {
           <h1 className="text-lg font-semibold">{activeDashboard.name}</h1>
         </div>
         <div className="flex items-center gap-2">
+          <GlobalRefreshControls />
+          <div className="w-px h-5 bg-(--color-border)" />
           <button
             onClick={handleShare}
             className="flex items-center gap-2 px-3 py-1.5 text-sm border border-(--color-border) rounded-lg hover:bg-(--color-accent) transition-colors"

@@ -7,6 +7,7 @@ import type { WidgetProps } from '../registry';
 import type { MapWidgetConfig } from './MapWidget.types';
 import { ConflictMarkers } from './ConflictMarkers';
 import { useGdeltGeoEvents } from '../../hooks';
+import { usePolling } from '../../stores';
 
 interface MapControllerProps {
   center: [number, number];
@@ -43,13 +44,26 @@ function MapController({ center, zoom }: MapControllerProps) {
 }
 
 export function MapWidget({ config }: WidgetProps<MapWidgetConfig>) {
+  const { isPaused, registerWidget, unregisterWidget } = usePolling();
   const showConflicts = config.showConflicts ?? true; // Default to showing conflicts
-  const { data: geoFeatures = [] } = useGdeltGeoEvents({
+
+  const { data: geoFeatures = [], isLoading, error, dataUpdatedAt } = useGdeltGeoEvents({
     location: config.locationName,
     center: config.locationName ? config.center : null, // Only filter by proximity when location is set
     zoom: config.zoom,
-    enabled: showConflicts,
+    enabled: !isPaused && showConflicts,
   });
+
+  // Register widget status for global connection tracking
+  useEffect(() => {
+    registerWidget(config.id, {
+      isLoading,
+      hasError: !!error,
+      errorMessage: error?.message,
+      lastUpdated: dataUpdatedAt,
+    });
+    return () => unregisterWidget(config.id);
+  }, [config.id, isLoading, error, dataUpdatedAt, registerWidget, unregisterWidget]);
 
   return (
     <div className="h-full w-full relative">

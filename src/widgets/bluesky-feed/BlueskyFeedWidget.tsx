@@ -6,6 +6,7 @@ import { CloudSun } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useBlueskyFeed } from '../../hooks/useBlueskyFeed';
 import { getCredentials } from '../../services/bluesky';
+import { usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
 import type { BlueskyFeedWidgetConfig } from './BlueskyFeedWidget.types';
 import { PostCard } from './PostCard';
@@ -15,6 +16,7 @@ import { WidgetError } from '../../components/WidgetError';
 export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
   const [hasCredentials, setHasCredentials] = useState<boolean | null>(null);
+  const { isPaused, registerWidget, unregisterWidget } = usePolling();
 
   // Check for credentials on mount and when localStorage changes
   useEffect(() => {
@@ -46,8 +48,19 @@ export function BlueskyFeedWidget({ config }: WidgetProps<BlueskyFeedWidgetConfi
     query: config.query,
     maxResults: config.maxResults,
     pollIntervalMs: config.pollIntervalMs,
-    enabled: hasCredentials === true && !!config.query,
+    enabled: !isPaused && hasCredentials === true && !!config.query,
   });
+
+  // Register widget status for global connection tracking
+  useEffect(() => {
+    registerWidget(config.id, {
+      isLoading,
+      hasError: !!error,
+      errorMessage: error?.message,
+      lastUpdated: dataUpdatedAt,
+    });
+    return () => unregisterWidget(config.id);
+  }, [config.id, isLoading, error, dataUpdatedAt, registerWidget, unregisterWidget]);
 
   const virtualizer = useVirtualizer({
     count: posts.length,

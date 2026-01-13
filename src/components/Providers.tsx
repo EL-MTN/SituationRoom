@@ -1,7 +1,7 @@
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { DashboardProvider, EventProvider } from '@/stores'
+import { DashboardProvider, EventProvider, PollingProvider } from '@/stores'
 import { useState, Suspense, type ReactNode } from 'react'
 import { UrlStateLoader } from './UrlStateLoader'
 
@@ -21,12 +21,14 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DashboardProvider>
-        <Suspense fallback={null}>
-          <UrlStateLoader />
-        </Suspense>
-        <EventProvider>{children}</EventProvider>
-      </DashboardProvider>
+      <PollingProvider>
+        <DashboardProvider>
+          <Suspense fallback={null}>
+            <UrlStateLoader />
+          </Suspense>
+          <EventProvider>{children}</EventProvider>
+        </DashboardProvider>
+      </PollingProvider>
     </QueryClientProvider>
   )
 }

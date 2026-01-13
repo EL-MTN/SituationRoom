@@ -7,6 +7,7 @@ import { Plane } from 'lucide-react';
 import type { WidgetProps } from '../registry';
 import type { FlightTrackerWidgetConfig } from './FlightTrackerWidget.types';
 import { useFlightTracker } from '../../hooks';
+import { usePolling } from '../../stores';
 import { FlightMarker } from './FlightMarker';
 import { WidgetError } from '../../components/WidgetError';
 
@@ -50,12 +51,24 @@ export function FlightTrackerWidget({
 }: WidgetProps<FlightTrackerWidgetConfig>) {
   const onConfigChangeRef = useRef(onConfigChange);
   onConfigChangeRef.current = onConfigChange;
+  const { isPaused, registerWidget, unregisterWidget } = usePolling();
 
-  const { flight, trail, isLoading, error, refetch } = useFlightTracker({
+  const { flight, trail, isLoading, error, refetch, dataUpdatedAt } = useFlightTracker({
     callsign: config.callsign,
     pollIntervalMs: config.pollIntervalMs,
-    enabled: !!config.callsign,
+    enabled: !isPaused && !!config.callsign,
   });
+
+  // Register widget status for global connection tracking
+  useEffect(() => {
+    registerWidget(config.id, {
+      isLoading,
+      hasError: !!error,
+      errorMessage: error?.message,
+      lastUpdated: dataUpdatedAt,
+    });
+    return () => unregisterWidget(config.id);
+  }, [config.id, isLoading, error, dataUpdatedAt, registerWidget, unregisterWidget]);
 
   // Update last known position when flight data changes (only if position changed)
   const lastPositionRef = useRef<[number, number] | null>(config.lastPosition);

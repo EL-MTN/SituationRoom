@@ -5,7 +5,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, Newspaper, Clock, Globe } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useGdeltEvents } from '../../hooks/useGdeltEvents';
-import { useEvents } from '../../stores';
+import { useEvents, usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
 import type { EventFeedWidgetConfig } from './EventFeedWidget.types';
 import type { NormalizedEvent } from '../../types';
@@ -14,13 +14,26 @@ import { WidgetError } from '../../components/WidgetError';
 export function EventFeedWidget({ config }: WidgetProps<EventFeedWidgetConfig>) {
   const parentRef = useRef<HTMLDivElement>(null);
   const { selectedEvent, selectEvent } = useEvents();
+  const { isPaused, registerWidget, unregisterWidget } = usePolling();
 
   const { data: events = [], isLoading, error, refetch, dataUpdatedAt } = useGdeltEvents({
     filters: config.filters,
     timespan: config.filters.timespan,
     maxRecords: config.maxItems,
     pollIntervalMs: config.pollIntervalMs,
+    enabled: !isPaused,
   });
+
+  // Register widget status for global connection tracking
+  useEffect(() => {
+    registerWidget(config.id, {
+      isLoading,
+      hasError: !!error,
+      errorMessage: error?.message,
+      lastUpdated: dataUpdatedAt,
+    });
+    return () => unregisterWidget(config.id);
+  }, [config.id, isLoading, error, dataUpdatedAt, registerWidget, unregisterWidget]);
 
   // Setup virtualizer
   const virtualizer = useVirtualizer({

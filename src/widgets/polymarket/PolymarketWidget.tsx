@@ -1,7 +1,9 @@
 'use client'
 
+import { useEffect } from 'react';
 import { TrendingUp, TrendingDown, Activity, DollarSign } from 'lucide-react';
 import { usePolymarketEvent, usePolymarketPriceHistory } from '../../hooks';
+import { usePolling } from '../../stores';
 import type { WidgetProps } from '../registry';
 import type { PolymarketWidgetConfig } from './PolymarketWidget.types';
 import type { PolymarketMarket } from '../../types';
@@ -127,10 +129,23 @@ function MarketCard({ market, priceHistory = [], isLoadingHistory }: MarketCardP
 }
 
 export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>) {
-  const { data: event, isLoading, error, refetch } = usePolymarketEvent({
+  const { isPaused, registerWidget, unregisterWidget } = usePolling();
+
+  const { data: event, isLoading, error, refetch, dataUpdatedAt } = usePolymarketEvent({
     slug: config.eventSlug,
-    enabled: !!config.eventSlug,
+    enabled: !isPaused && !!config.eventSlug,
   });
+
+  // Register widget status for global connection tracking
+  useEffect(() => {
+    registerWidget(config.id, {
+      isLoading,
+      hasError: !!error,
+      errorMessage: error?.message,
+      lastUpdated: dataUpdatedAt,
+    });
+    return () => unregisterWidget(config.id);
+  }, [config.id, isLoading, error, dataUpdatedAt, registerWidget, unregisterWidget]);
 
   // Get the primary market's CLOB token ID for price history (first token = Yes outcome)
   const primaryMarket = event?.markets?.[0];
@@ -141,7 +156,7 @@ export function PolymarketWidget({ config }: WidgetProps<PolymarketWidgetConfig>
   const { data: priceHistory = [], isLoading: isLoadingHistory } = usePolymarketPriceHistory({
     marketId: yesTokenId,
     interval: config.chartInterval || '1d',
-    enabled: !!yesTokenId,
+    enabled: !isPaused && !!yesTokenId,
   });
 
   // No market selected
