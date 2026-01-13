@@ -21,6 +21,7 @@ import './bluesky-feed';
 import './youtube';
 import './flight-tracker';
 import './notes';
+import './rss-feed';
 
 // Re-export widget types for convenience
 export type { MapWidgetConfig } from './map';
@@ -30,3 +31,4 @@ export type { BlueskyFeedWidgetConfig } from './bluesky-feed';
 export type { YoutubeWidgetConfig } from './youtube';
 export type { FlightTrackerWidgetConfig } from './flight-tracker';
 export type { NotesWidgetConfig } from './notes';
+export type { RssFeedWidgetConfig } from './rss-feed';
