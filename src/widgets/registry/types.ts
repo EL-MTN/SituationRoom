@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import type { LucideIcon } from 'lucide-react';
+import type { LocationContext } from '@/types/pin.types';
 
 /**
  * Base configuration all widgets must have
@@ -8,6 +9,16 @@ export interface BaseWidgetConfig {
   id: string;
   type: string;
   title: string;
+}
+
+/**
+ * Default dimensions for floating widget panels
+ */
+export interface FloatingDefaults {
+  width: number;
+  height: number;
+  minWidth: number;
+  minHeight: number;
 }
 
 /**
@@ -39,6 +50,8 @@ export interface WidgetInstance<T extends BaseWidgetConfig = BaseWidgetConfig> {
 export interface WidgetProps<T extends BaseWidgetConfig = BaseWidgetConfig> {
   config: T;
   onConfigChange: (config: Partial<T>) => void;
+  /** Location context when widget is opened from a map pin */
+  locationContext?: LocationContext;
 }
 
 /**
@@ -90,4 +103,13 @@ export interface WidgetDefinition<T extends BaseWidgetConfig = BaseWidgetConfig>
 
   /** Optional custom toolbar items (settings gear, etc.) */
   toolbarItems?: ComponentType<WidgetHeaderExtensionProps<T>>;
+
+  /** Default dimensions for floating panel mode */
+  floatingDefaults?: FloatingDefaults;
+
+  /** Whether this widget can use location context from map pins */
+  supportsLocationContext?: boolean;
+
+  /** Generate config overrides based on location context */
+  getLocationConfig?: (context: LocationContext) => Partial<T>;
 }

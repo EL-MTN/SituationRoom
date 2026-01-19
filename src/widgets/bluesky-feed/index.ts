@@ -23,6 +23,13 @@ WidgetRegistry.register<BlueskyFeedWidgetConfig>({
     },
     layout: { w: 8, h: 10, minW: 3, minH: 3 },
   },
+  floatingDefaults: {
+    width: 450,
+    height: 550,
+    minWidth: 300,
+    minHeight: 300,
+  },
+  supportsLocationContext: true,
   component: BlueskyFeedWidget,
   headerActions: BlueskyFeedWidgetHeader,
   toolbarItems: BlueskyFeedWidgetToolbar,

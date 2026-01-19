@@ -8,4 +8,5 @@ export type {
   WidgetMetadata,
   WidgetDefaults,
   WidgetDefinition,
+  FloatingDefaults,
 } from './types';

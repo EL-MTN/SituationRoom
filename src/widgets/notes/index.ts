@@ -18,6 +18,12 @@ WidgetRegistry.register<NotesWidgetConfig>({
     },
     layout: { w: 4, h: 5, minW: 2, minH: 3 },
   },
+  floatingDefaults: {
+    width: 350,
+    height: 400,
+    minWidth: 200,
+    minHeight: 200,
+  },
   component: NotesWidget,
 });
 

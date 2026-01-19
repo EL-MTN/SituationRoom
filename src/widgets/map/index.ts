@@ -22,6 +22,12 @@ WidgetRegistry.register<MapWidgetConfig>({
     },
     layout: { w: 8, h: 10, minW: 4, minH: 3 },
   },
+  floatingDefaults: {
+    width: 500,
+    height: 400,
+    minWidth: 300,
+    minHeight: 250,
+  },
   component: MapWidgetDynamic,
   headerActions: MapWidgetHeader,
 });

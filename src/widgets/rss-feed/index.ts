@@ -24,6 +24,12 @@ WidgetRegistry.register<RssFeedWidgetConfig>({
     },
     layout: { w: 4, h: 5, minW: 3, minH: 3 },
   },
+  floatingDefaults: {
+    width: 400,
+    height: 450,
+    minWidth: 300,
+    minHeight: 250,
+  },
   component: RssFeedWidget,
   headerActions: RssFeedWidgetHeader,
   toolbarItems: RssFeedWidgetToolbar,

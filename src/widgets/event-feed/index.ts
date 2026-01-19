@@ -28,6 +28,13 @@ WidgetRegistry.register<EventFeedWidgetConfig>({
     },
     layout: { w: 4, h: 5, minW: 4, minH: 3 },
   },
+  floatingDefaults: {
+    width: 400,
+    height: 500,
+    minWidth: 300,
+    minHeight: 250,
+  },
+  supportsLocationContext: true,
   component: EventFeedWidget,
   headerActions: EventFeedWidgetHeader,
   toolbarItems: EventFeedWidgetToolbar,

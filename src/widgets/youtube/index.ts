@@ -19,6 +19,12 @@ WidgetRegistry.register<YoutubeWidgetConfig>({
     },
     layout: { w: 6, h: 8, minW: 3, minH: 4 },
   },
+  floatingDefaults: {
+    width: 560,
+    height: 400,
+    minWidth: 320,
+    minHeight: 240,
+  },
   component: YoutubeWidget,
   headerActions: YoutubeWidgetHeader,
 });

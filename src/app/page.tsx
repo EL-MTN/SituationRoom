@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
-import { DashboardPage } from '@/features/dashboard/DashboardPage'
+import { MapDashboardDynamic } from '@/components/map-dashboard'
 
 export default function Home() {
   return (
     <Suspense fallback={null}>
-      <DashboardPage />
+      <MapDashboardDynamic />
     </Suspense>
   )
 }

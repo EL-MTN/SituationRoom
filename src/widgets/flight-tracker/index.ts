@@ -26,6 +26,12 @@ WidgetRegistry.register<FlightTrackerWidgetConfig>({
     },
     layout: { w: 8, h: 10, minW: 4, minH: 4 },
   },
+  floatingDefaults: {
+    width: 500,
+    height: 450,
+    minWidth: 350,
+    minHeight: 300,
+  },
   component: FlightTrackerWidgetDynamic,
   headerActions: FlightTrackerWidgetHeader,
   toolbarItems: FlightTrackerWidgetToolbar,

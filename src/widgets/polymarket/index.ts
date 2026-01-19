@@ -23,6 +23,12 @@ WidgetRegistry.register<PolymarketWidgetConfig>({
     },
     layout: { w: 4, h: 4, minW: 3, minH: 3 },
   },
+  floatingDefaults: {
+    width: 400,
+    height: 350,
+    minWidth: 300,
+    minHeight: 250,
+  },
   component: PolymarketWidget,
   headerActions: PolymarketWidgetHeader,
   toolbarItems: PolymarketWidgetToolbar,
