@@ -4,6 +4,7 @@ import { FlightTrackerWidgetDynamic } from './FlightTrackerWidgetDynamic';
 import { FlightTrackerWidgetHeader } from './FlightTrackerWidgetHeader';
 import { FlightTrackerWidgetToolbar } from './FlightTrackerWidgetToolbar';
 import type { FlightTrackerWidgetConfig } from './types';
+import type { LocationContext } from '@/types/pin.types';
 
 // Self-register on import
 WidgetRegistry.register<FlightTrackerWidgetConfig>({
@@ -31,6 +32,15 @@ WidgetRegistry.register<FlightTrackerWidgetConfig>({
     height: 450,
     minWidth: 350,
     minHeight: 300,
+  },
+  supportsLocationContext: true,
+  getLocationConfig: (ctx: LocationContext): Partial<FlightTrackerWidgetConfig> => {
+    // Center the map on pin coordinates
+    return {
+      lastPosition: ctx.coordinates,
+      autoCenter: true,
+      zoom: 8, // Zoom in closer for pin-based view
+    };
   },
   component: FlightTrackerWidgetDynamic,
   headerActions: FlightTrackerWidgetHeader,

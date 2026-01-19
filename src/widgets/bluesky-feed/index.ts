@@ -4,6 +4,7 @@ import { BlueskyFeedWidget } from './BlueskyFeedWidget';
 import { BlueskyFeedWidgetHeader } from './BlueskyFeedWidgetHeader';
 import { BlueskyFeedWidgetToolbar } from './BlueskyFeedWidgetToolbar';
 import type { BlueskyFeedWidgetConfig } from './types';
+import type { LocationContext } from '@/types/pin.types';
 
 WidgetRegistry.register<BlueskyFeedWidgetConfig>({
   metadata: {
@@ -30,6 +31,13 @@ WidgetRegistry.register<BlueskyFeedWidgetConfig>({
     minHeight: 300,
   },
   supportsLocationContext: true,
+  getLocationConfig: (ctx: LocationContext): Partial<BlueskyFeedWidgetConfig> => {
+    // Priority: queryOverride > locationName > label
+    const query = ctx.queryOverride || ctx.locationName || ctx.label;
+    return {
+      query,
+    };
+  },
   component: BlueskyFeedWidget,
   headerActions: BlueskyFeedWidgetHeader,
   toolbarItems: BlueskyFeedWidgetToolbar,

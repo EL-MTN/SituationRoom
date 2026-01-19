@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import type L from 'leaflet';
-import type { MapPin } from '@/types/pin.types';
+import type { MapPin, LinkedWidgetConfig } from '@/types/pin.types';
 import { PinMarker } from './PinMarker';
 import { PinEditPopover } from './PinEditPopover';
 import { WidgetLinkingDialog } from './WidgetLinkingDialog';
@@ -31,6 +31,7 @@ export function PinManager({
     updatePin,
     deletePin,
     linkWidgetToPin,
+    updateLinkedWidget,
     unlinkWidgetFromPin,
     openPinWidgets,
   } = useMapDashboard();
@@ -105,12 +106,22 @@ export function PinManager({
 
   // Handle linking widget to pin
   const handleLinkWidget = useCallback(
-    (widgetType: string) => {
+    (linkedConfig: LinkedWidgetConfig) => {
       if (linkingPin) {
-        linkWidgetToPin(linkingPin.id, widgetType);
+        linkWidgetToPin(linkingPin.id, linkedConfig);
       }
     },
     [linkingPin, linkWidgetToPin]
+  );
+
+  // Handle updating linked widget settings
+  const handleUpdateLinkedWidget = useCallback(
+    (widgetType: string, updates: Partial<LinkedWidgetConfig>) => {
+      if (linkingPin) {
+        updateLinkedWidget(linkingPin.id, widgetType, updates);
+      }
+    },
+    [linkingPin, updateLinkedWidget]
   );
 
   // Handle unlinking widget from pin
@@ -163,6 +174,7 @@ export function PinManager({
         <WidgetLinkingDialog
           pin={linkingPin}
           onLink={handleLinkWidget}
+          onUpdate={handleUpdateLinkedWidget}
           onUnlink={handleUnlinkWidget}
           onClose={() => {
             // Refresh the pin state after linking changes

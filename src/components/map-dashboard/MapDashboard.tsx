@@ -12,7 +12,7 @@ import { WidgetLinkingDialog } from './WidgetLinkingDialog';
 import { FloatingWidgetContainer } from './FloatingWidgetContainer';
 import { AddWidgetMenu } from './AddWidgetMenu';
 import type { MapState } from './BackgroundMap';
-import type { MapPin } from '@/types/pin.types';
+import type { MapPin, LinkedWidgetConfig } from '@/types/pin.types';
 
 type Mode = 'normal' | 'add-pin';
 
@@ -30,6 +30,7 @@ export function MapDashboard() {
     updatePin,
     deletePin,
     linkWidgetToPin,
+    updateLinkedWidget,
     unlinkWidgetFromPin,
     openPinWidgets,
     addFloatingWidget,
@@ -134,12 +135,22 @@ export function MapDashboard() {
 
   // Handle linking widget to pin
   const handleLinkWidget = useCallback(
-    (widgetType: string) => {
+    (linkedConfig: LinkedWidgetConfig) => {
       if (linkingPin) {
-        linkWidgetToPin(linkingPin.id, widgetType);
+        linkWidgetToPin(linkingPin.id, linkedConfig);
       }
     },
     [linkingPin, linkWidgetToPin]
+  );
+
+  // Handle updating linked widget settings
+  const handleUpdateLinkedWidget = useCallback(
+    (widgetType: string, updates: Partial<LinkedWidgetConfig>) => {
+      if (linkingPin) {
+        updateLinkedWidget(linkingPin.id, widgetType, updates);
+      }
+    },
+    [linkingPin, updateLinkedWidget]
   );
 
   // Handle unlinking widget from pin
@@ -307,6 +318,7 @@ export function MapDashboard() {
         <WidgetLinkingDialog
           pin={linkingPin}
           onLink={handleLinkWidget}
+          onUpdate={handleUpdateLinkedWidget}
           onUnlink={handleUnlinkWidget}
           onClose={() => setLinkingPin(null)}
         />

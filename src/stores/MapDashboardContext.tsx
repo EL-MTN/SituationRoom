@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { MapPin, LocationContext, LinkedWidgetConfig } from '@/types/pin.types';
+import { reverseGeocode, getLocationQueryName } from '@/utils/reverseGeocode';
 import type { FloatingWidgetInstance, FloatingWidgetPosition } from '@/types/floating.types';
 import type { BaseWidgetConfig } from '@/widgets/registry/types';
 import type { WidgetConfig } from '@/types/widget.types';
@@ -38,6 +39,7 @@ type MapDashboardAction =
   | { type: 'UPDATE_PIN'; payload: { id: string; updates: Partial<MapPin> } }
   | { type: 'DELETE_PIN'; payload: { id: string } }
   | { type: 'LINK_WIDGET_TO_PIN'; payload: { pinId: string; linkedConfig: LinkedWidgetConfig } }
+  | { type: 'UPDATE_LINKED_WIDGET'; payload: { pinId: string; widgetType: string; updates: Partial<LinkedWidgetConfig> } }
   | { type: 'UNLINK_WIDGET_FROM_PIN'; payload: { pinId: string; widgetType: string } }
   | { type: 'ADD_FLOATING_WIDGET'; payload: FloatingWidgetInstance }
   | { type: 'REMOVE_FLOATING_WIDGET'; payload: { id: string } }
@@ -102,6 +104,23 @@ function mapDashboardReducer(
             ? {
                 ...p,
                 linkedWidgetConfigs: [...p.linkedWidgetConfigs, action.payload.linkedConfig],
+              }
+            : p
+        ),
+      };
+
+    case 'UPDATE_LINKED_WIDGET':
+      return {
+        ...state,
+        pins: state.pins.map((p) =>
+          p.id === action.payload.pinId
+            ? {
+                ...p,
+                linkedWidgetConfigs: p.linkedWidgetConfigs.map((c) =>
+                  c.widgetType === action.payload.widgetType
+                    ? { ...c, ...action.payload.updates }
+                    : c
+                ),
               }
             : p
         ),
@@ -230,7 +249,8 @@ interface MapDashboardContextValue {
   addPin: (coordinates: [number, number], label: string, color?: string) => string;
   updatePin: (id: string, updates: Partial<MapPin>) => void;
   deletePin: (id: string) => void;
-  linkWidgetToPin: (pinId: string, widgetType: string, configOverrides?: Record<string, unknown>) => void;
+  linkWidgetToPin: (pinId: string, linkedConfig: LinkedWidgetConfig) => void;
+  updateLinkedWidget: (pinId: string, widgetType: string, updates: Partial<LinkedWidgetConfig>) => void;
   unlinkWidgetFromPin: (pinId: string, widgetType: string) => void;
   addFloatingWidget: (type: string, options?: {
     x?: number;
@@ -243,7 +263,7 @@ interface MapDashboardContextValue {
   bringToFront: (id: string) => void;
   minimizeWidget: (id: string) => void;
   restoreWidget: (id: string) => void;
-  openPinWidgets: (pinId: string) => void;
+  openPinWidgets: (pinId: string) => Promise<void>;
 }
 
 const MapDashboardContext = createContext<MapDashboardContextValue | null>(null);
@@ -302,10 +322,20 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const linkWidgetToPin = useCallback(
-    (pinId: string, widgetType: string, configOverrides?: Record<string, unknown>) => {
+    (pinId: string, linkedConfig: LinkedWidgetConfig) => {
       dispatch({
         type: 'LINK_WIDGET_TO_PIN',
-        payload: { pinId, linkedConfig: { widgetType, configOverrides } },
+        payload: { pinId, linkedConfig },
+      });
+    },
+    []
+  );
+
+  const updateLinkedWidget = useCallback(
+    (pinId: string, widgetType: string, updates: Partial<LinkedWidgetConfig>) => {
+      dispatch({
+        type: 'UPDATE_LINKED_WIDGET',
+        payload: { pinId, widgetType, updates },
       });
     },
     []
@@ -389,16 +419,13 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
 
   // Open all widgets linked to a pin
   const openPinWidgets = useCallback(
-    (pinId: string) => {
+    async (pinId: string) => {
       const pin = state.pins.find((p) => p.id === pinId);
       if (!pin) return;
 
-      const locationContext: LocationContext = {
-        pinId: pin.id,
-        coordinates: pin.coordinates,
-        label: pin.label,
-        radius: 50, // Default radius in km
-      };
+      // Reverse geocode the coordinates to get location name
+      const geoData = await reverseGeocode(pin.coordinates);
+      const locationName = getLocationQueryName(geoData);
 
       // Calculate positions in a fan layout around a central point
       const baseX = 100;
@@ -421,6 +448,31 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
             bringToFront(existingWidget.config.id);
           }
         } else {
+          // Build the query for this widget:
+          // Priority: queryOverride > locationName > pin label
+          const useLocationQuery = linked.useLocationQuery !== false; // Default true
+          let query: string | undefined;
+
+          if (linked.queryOverride) {
+            // User specified a custom query
+            query = linked.queryOverride;
+          } else if (useLocationQuery && locationName) {
+            // Use geocoded location name
+            query = locationName;
+          }
+          // Otherwise, widget will use pin label as fallback
+
+          // Build enhanced location context
+          const locationContext: LocationContext = {
+            pinId: pin.id,
+            coordinates: pin.coordinates,
+            label: pin.label,
+            radius: linked.radiusKm ?? 50,
+            locationName,
+            country: geoData.country,
+            queryOverride: query,
+          };
+
           // Create new widget
           addFloatingWidget(linked.widgetType, {
             x: baseX + index * offsetX,
@@ -440,6 +492,7 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
     updatePin,
     deletePin,
     linkWidgetToPin,
+    updateLinkedWidget,
     unlinkWidgetFromPin,
     addFloatingWidget,
     removeFloatingWidget,

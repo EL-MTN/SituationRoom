@@ -4,6 +4,7 @@ import { EventFeedWidget } from './EventFeedWidget';
 import { EventFeedWidgetHeader } from './EventFeedWidgetHeader';
 import { EventFeedWidgetToolbar } from './EventFeedWidgetToolbar';
 import type { EventFeedWidgetConfig } from './types';
+import type { LocationContext } from '@/types/pin.types';
 
 // Self-register on import
 WidgetRegistry.register<EventFeedWidgetConfig>({
@@ -35,6 +36,17 @@ WidgetRegistry.register<EventFeedWidgetConfig>({
     minHeight: 250,
   },
   supportsLocationContext: true,
+  getLocationConfig: (ctx: LocationContext): Partial<EventFeedWidgetConfig> => {
+    // Priority: queryOverride > locationName > label
+    const query = ctx.queryOverride || ctx.locationName || ctx.label;
+    return {
+      filters: {
+        query,
+        timespan: '24h',
+      },
+      highlightKeywords: query ? [query] : [],
+    };
+  },
   component: EventFeedWidget,
   headerActions: EventFeedWidgetHeader,
   toolbarItems: EventFeedWidgetToolbar,
