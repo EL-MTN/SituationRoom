@@ -11,6 +11,9 @@ import {
 } from 'react';
 import type { MapPin, LocationContext, LinkedWidgetConfig } from '@/types/pin.types';
 import { reverseGeocode, getLocationQueryName } from '@/utils/reverseGeocode';
+import { fetchGdeltGeo } from '@/widgets/map/services';
+import { filterFeaturesByRadius } from '@/widgets/map/hooks';
+import type { GdeltGeoFeature } from '@/widgets/map/types';
 import type { FloatingWidgetInstance, FloatingWidgetPosition } from '@/types/floating.types';
 import type { BaseWidgetConfig } from '@/widgets/registry/types';
 import type { WidgetConfig } from '@/types/widget.types';
@@ -22,6 +25,12 @@ export interface MapState {
   zoom: number;
 }
 
+// Active geo features from a pin click
+export interface ActivePinGeoFeatures {
+  pinId: string;
+  features: GdeltGeoFeature[];
+}
+
 // Dashboard state
 interface MapDashboardState {
   id: string;
@@ -30,6 +39,7 @@ interface MapDashboardState {
   pins: MapPin[];
   floatingWidgets: FloatingWidgetInstance[];
   maxZIndex: number;
+  activePinGeoFeatures: ActivePinGeoFeatures | null;
 }
 
 // Actions
@@ -48,7 +58,9 @@ type MapDashboardAction =
   | { type: 'BRING_TO_FRONT'; payload: { id: string } }
   | { type: 'MINIMIZE_WIDGET'; payload: { id: string } }
   | { type: 'RESTORE_WIDGET'; payload: { id: string } }
-  | { type: 'LOAD_FROM_STORAGE'; payload: { state: MapDashboardState } };
+  | { type: 'LOAD_FROM_STORAGE'; payload: { state: MapDashboardState } }
+  | { type: 'SET_ACTIVE_GEO_FEATURES'; payload: ActivePinGeoFeatures | null }
+  | { type: 'CLEAR_ACTIVE_GEO_FEATURES' };
 
 const DEFAULT_MAP_STATE: MapState = {
   center: [39.8283, -98.5795], // Center of US
@@ -65,6 +77,7 @@ const initialState: MapDashboardState = {
   pins: [],
   floatingWidgets: [],
   maxZIndex: 20,
+  activePinGeoFeatures: null,
 };
 
 function mapDashboardReducer(
@@ -223,6 +236,12 @@ function mapDashboardReducer(
     case 'LOAD_FROM_STORAGE':
       return action.payload.state;
 
+    case 'SET_ACTIVE_GEO_FEATURES':
+      return { ...state, activePinGeoFeatures: action.payload };
+
+    case 'CLEAR_ACTIVE_GEO_FEATURES':
+      return { ...state, activePinGeoFeatures: null };
+
     default:
       return state;
   }
@@ -230,13 +249,16 @@ function mapDashboardReducer(
 
 // Serialization helpers
 function serializeState(state: MapDashboardState): string {
-  return JSON.stringify(state);
+  // Exclude ephemeral activePinGeoFeatures from persistence
+  const { activePinGeoFeatures: _, ...persistable } = state;
+  return JSON.stringify(persistable);
 }
 
 function deserializeState(json: string): MapDashboardState | null {
   try {
     const parsed = JSON.parse(json);
-    return parsed as MapDashboardState;
+    // Ensure activePinGeoFeatures is null (it's not persisted)
+    return { ...parsed, activePinGeoFeatures: null } as MapDashboardState;
   } catch {
     return null;
   }
@@ -264,6 +286,7 @@ interface MapDashboardContextValue {
   minimizeWidget: (id: string) => void;
   restoreWidget: (id: string) => void;
   openPinWidgets: (pinId: string) => Promise<void>;
+  clearActiveGeoFeatures: () => void;
 }
 
 const MapDashboardContext = createContext<MapDashboardContextValue | null>(null);
@@ -417,6 +440,11 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'RESTORE_WIDGET', payload: { id } });
   }, []);
 
+  // Clear geo features from map
+  const clearActiveGeoFeatures = useCallback(() => {
+    dispatch({ type: 'CLEAR_ACTIVE_GEO_FEATURES' });
+  }, []);
+
   // Open all widgets linked to a pin
   const openPinWidgets = useCallback(
     async (pinId: string) => {
@@ -426,6 +454,53 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
       // Reverse geocode the coordinates to get location name
       const geoData = await reverseGeocode(pin.coordinates);
       const locationName = getLocationQueryName(geoData);
+
+      // Check if event-feed is linked (supports geo features on map)
+      const eventFeedConfig = pin.linkedWidgetConfigs.find(
+        (c) => c.widgetType === 'event-feed'
+      );
+
+      // If event-feed is linked, fetch geo data for map markers
+      if (eventFeedConfig) {
+        const radiusKm = eventFeedConfig.radiusKm ?? 50;
+        // Build query: priority is queryOverride > locationName > pin label
+        const useLocationQuery = eventFeedConfig.useLocationQuery !== false;
+        let searchQuery = eventFeedConfig.queryOverride;
+        if (!searchQuery && useLocationQuery && locationName) {
+          searchQuery = locationName;
+        }
+        if (!searchQuery) {
+          searchQuery = pin.label;
+        }
+
+        try {
+          // Fetch geo events from GDELT
+          const geoResponse = await fetchGdeltGeo({
+            query: searchQuery,
+            timespan: '24h',
+          });
+
+          // Filter by radius
+          const filteredFeatures = filterFeaturesByRadius(
+            geoResponse.features || [],
+            pin.coordinates,
+            radiusKm
+          );
+
+          // Store in state for EventMarkers to display
+          dispatch({
+            type: 'SET_ACTIVE_GEO_FEATURES',
+            payload: { pinId, features: filteredFeatures },
+          });
+        } catch (error) {
+          console.warn('Failed to fetch geo events for pin:', error);
+          // Clear any previous geo features on error
+          dispatch({ type: 'CLEAR_ACTIVE_GEO_FEATURES' });
+        }
+      } else {
+        // No event-feed linked, clear geo features
+        dispatch({ type: 'CLEAR_ACTIVE_GEO_FEATURES' });
+      }
 
       // Calculate positions in a fan layout around a central point
       const baseX = 100;
@@ -502,6 +577,7 @@ export function MapDashboardProvider({ children }: { children: ReactNode }) {
     minimizeWidget,
     restoreWidget,
     openPinWidgets,
+    clearActiveGeoFeatures,
   };
 
   return (

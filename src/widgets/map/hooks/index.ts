@@ -45,8 +45,11 @@ function getFilterRadiusKm(zoom: number): number {
   return radiusMap[Math.min(Math.max(zoom, 2), 14)] || 1000;
 }
 
-// Filter features by geographic proximity to center point
-function filterFeaturesByProximity(
+// Export for use in other components
+export { getDistanceKm, getFilterRadiusKm };
+
+// Filter features by geographic proximity to center point (zoom-based radius)
+export function filterFeaturesByProximity(
   features: GdeltGeoFeature[],
   center: [number, number],
   zoom: number
@@ -58,6 +61,21 @@ function filterFeaturesByProximity(
     const [lng, lat] = feature.geometry.coordinates;
     const distance = getDistanceKm(centerLat, centerLng, lat, lng);
     return distance <= maxRadius;
+  });
+}
+
+// Filter features by specific radius in km
+export function filterFeaturesByRadius(
+  features: GdeltGeoFeature[],
+  center: [number, number],
+  radiusKm: number
+): GdeltGeoFeature[] {
+  const [centerLat, centerLng] = center;
+
+  return features.filter((feature) => {
+    const [lng, lat] = feature.geometry.coordinates;
+    const distance = getDistanceKm(centerLat, centerLng, lat, lng);
+    return distance <= radiusKm;
   });
 }
 

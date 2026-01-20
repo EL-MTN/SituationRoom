@@ -7,6 +7,7 @@ import { useMapDashboard } from '@/stores/MapDashboardContext';
 import { usePolling } from '@/stores/PollingContext';
 import { BackgroundMap } from './BackgroundMapDynamic';
 import { PinMarkers } from './PinMarkers';
+import { EventMarkers } from './EventMarkersDynamic';
 import { PinEditPopover } from './PinEditPopover';
 import { WidgetLinkingDialog } from './WidgetLinkingDialog';
 import { FloatingWidgetContainer } from './FloatingWidgetContainer';
@@ -196,11 +197,13 @@ export function MapDashboard() {
         onMapStateChange={handleMapStateChange}
         onMapClick={handleMapClick}
       >
-        {/* Only pin markers inside the map */}
+        {/* Pin markers */}
         <PinMarkers
           onPinClick={handlePinClick}
           onPinContextMenu={handlePinContextMenu}
         />
+        {/* Event markers from active pin's geo features */}
+        <EventMarkers />
       </BackgroundMap>
 
       {/* Floating Widgets Layer */}
